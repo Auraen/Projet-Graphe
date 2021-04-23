@@ -9,8 +9,7 @@
 #ifndef C_EXCEPTIONS_H
 #define C_EXCEPTIONS_H
 
-#include <iostream>
-#include <assert.h>
+#include <iostream>s
 
 class CExceptions
 {

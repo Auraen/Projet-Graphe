@@ -151,11 +151,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CActions.cpp" />
+    <ClCompile Include="CArc.cpp" />
     <ClCompile Include="CExceptions.cpp" />
+    <ClCompile Include="CFichier.cpp" />
+    <ClCompile Include="CGraphe.cpp" />
+    <ClCompile Include="CSommet.cpp" />
     <ClCompile Include="Projet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CActions.h" />
+    <ClInclude Include="CArc.h" />
     <ClInclude Include="CExceptions.h" />
+    <ClInclude Include="CFichier.h" />
+    <ClInclude Include="CGraphe.h" />
+    <ClInclude Include="CSommet.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
