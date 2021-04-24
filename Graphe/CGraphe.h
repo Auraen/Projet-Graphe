@@ -11,6 +11,7 @@ class CGraphe
 private:
 	CSommet* pGRASommets;
 	int iGRANb_sommets;
+	int iGRANb_arcs;
 
 public:
 	CGraphe();
@@ -23,5 +24,7 @@ public:
 	void GRAmodifier_arc(int iSommet_depart, int iSommet_arrivee, int iNew_depart, int iNew_arrivee);
 	void GRAajouter_arc(int iSommet_depart, int iSommet_arrivee);
 	void GRAsupprimer_arc(int iSommet_depart, int iSommet_arrivee);
+	int GRAlire_nb_arcs();
+	void GRAmodifier_nb_arcs(int iNombre);
 };
 #endif

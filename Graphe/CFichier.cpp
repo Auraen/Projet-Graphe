@@ -49,7 +49,7 @@ CGraphe CFichier::FIClire_graphe(char * pcNom)
 
 		char* cLine = new char[2048];
 
-		//Type des elements de la matrice
+		//Nb de Sommets
 		do
 		{
 			fichier.getline(cLine, 2048);
@@ -58,12 +58,12 @@ CGraphe CFichier::FIClire_graphe(char * pcNom)
 		char * cBuffer = strtok(cLine, "=");
 		cBuffer = strtok(NULL, "=");
 
-		if (cBuffer[0] != 'd' && cBuffer[0] != 'D') {
-			throw CExceptions(EXCType_Mat);
+		if (cBuffer == NULL) {
+			throw CExceptions(EXCParse);
 		}
+		GRAResult.GRAmodifier_nb_sommet(atoi(cBuffer));
 
-
-		//Nb de Lignes
+		//Nb d'arcs
 		do
 		{
 			fichier.getline(cLine, 2048);
@@ -75,31 +75,15 @@ CGraphe CFichier::FIClire_graphe(char * pcNom)
 		if (cBuffer == NULL) {
 			throw CExceptions(EXCParse);
 		}
+		GRAResult.GRAmodifier_nb_arcs(atoi(cBuffer));
 
-		GRAResult.MATmodifier_nb_line(atoi(cBuffer));
-
-		//Nb de colonnes
+		//Numéro du sommet
 		do
 		{
-			fichier.getline(cLine, 2048);
+			fichier.getline(cLine, 2048);  // Ligne avec ecrit Sommets = [
 			FICsupprime_espace(cLine);
 		} while (cLine[0] == '\n' || cLine[0] == '\r' || cLine[0] == '\0');
-		cBuffer = strtok(cLine, "=");
-		cBuffer = strtok(NULL, "=");
-
-		if (cBuffer == NULL) {
-			throw CExceptions(EXCParse);
-		}
-
-		GRAResult.MATmodifier_nb_column(atoi(cBuffer));
-
-		//Elements de la matrice
-		do
-		{
-			fichier.getline(cLine, 2048);  // Ligne avec ecrit Matrice = [
-			FICsupprime_espace(cLine);
-		} while (cLine[0] == '\n' || cLine[0] == '\r' || cLine[0] == '\0');
-		fichier.getline(cLine, 2048); // Premiere ligne avec les valeurs
+		fichier.getline(cLine, 2048); // Premiere ligne avec le numéro du sommet
 
 		int iLine, iColumn;
 		double dElement;
