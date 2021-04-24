@@ -40,11 +40,11 @@ void CFichier::FICsupprime_espace(char * pcStr)
  *
  * @param pcNom Nom du fichier dont il faut extraire une matrice
  * @return la matrice extraite du fichier
-
-CMatrice<double> CFichier::FIClire_matrice(char * pcNom)
+ */
+CGraphe CFichier::FIClire_graphe(char * pcNom)
 {
 	ifstream fichier(pcNom);
-	CMatrice<double> MATResult;
+	CGraphe GRAResult;
 	if (fichier.is_open()) {
 
 		char* cLine = new char[2048];
@@ -76,7 +76,7 @@ CMatrice<double> CFichier::FIClire_matrice(char * pcNom)
 			throw CExceptions(EXCParse);
 		}
 
-		MATResult.MATmodifier_nb_line(atoi(cBuffer));
+		GRAResult.MATmodifier_nb_line(atoi(cBuffer));
 
 		//Nb de colonnes
 		do
@@ -91,7 +91,7 @@ CMatrice<double> CFichier::FIClire_matrice(char * pcNom)
 			throw CExceptions(EXCParse);
 		}
 
-		MATResult.MATmodifier_nb_column(atoi(cBuffer));
+		GRAResult.MATmodifier_nb_column(atoi(cBuffer));
 
 		//Elements de la matrice
 		do
@@ -103,8 +103,8 @@ CMatrice<double> CFichier::FIClire_matrice(char * pcNom)
 
 		int iLine, iColumn;
 		double dElement;
-		int iNb_Line = MATResult.MATlire_nb_line();
-		int iNb_Column = MATResult.MATlire_nb_column();
+		int iNb_Line = GRAResult.MATlire_nb_line();
+		int iNb_Column = GRAResult.MATlire_nb_column();
 
 		for (iLine = 0; iLine < iNb_Line; iLine++)
 		{
@@ -127,7 +127,7 @@ CMatrice<double> CFichier::FIClire_matrice(char * pcNom)
 				}
 
 				dElement = atof(cBuffer);
-				MATResult.MATmodifier_element(iLine, iColumn, dElement);
+				GRAResult.MATmodifier_element(iLine, iColumn, dElement);
 				cBuffer = strtok(NULL, " ");
 			}
 
@@ -147,6 +147,5 @@ CMatrice<double> CFichier::FIClire_matrice(char * pcNom)
 		throw CExceptions(EXCFic_nopen);
 	}
 
-	return MATResult;
+	return GRAResult;
 }
-*/
