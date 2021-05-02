@@ -11,7 +11,6 @@ class CArc
 private:
 	int iARCDestination;
 
-
 public:
 	CArc();
 	CArc(int iDestination);

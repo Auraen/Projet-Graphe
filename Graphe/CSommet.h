@@ -11,6 +11,7 @@ class CSommet
 private:
 	int iSOMNumero;
 	static int iSOMincremente_numero;
+	static int* piSOMstocke_numero;
 	int iSOMNb_entrant;
 	int iSOMNb_sortant;
 	CArc** pSOMEntrant;
@@ -23,9 +24,7 @@ public:
 	int SOMlire_numero_sommet();
 	void SOMmodifier_numero_sommet(int iNumero);
 	int SOMlire_nb_entrant();
-	void SOMmodifier_nb_entrant(int iNombre);
 	int SOMlire_nb_sortant();
-	void SOMmodifier_nb_sortant(int iNombre);
 	void SOMlire_arc_entrant(CArc ARCarc);
 	void SOMajouter_arc_entrant(CArc ARCarc);
 	void SOMlire_arc_sortant(CArc ARCarc);
