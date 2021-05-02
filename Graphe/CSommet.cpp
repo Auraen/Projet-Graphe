@@ -76,6 +76,16 @@ int CSommet::SOMlire_numero_sommet()
 
 void CSommet::SOMmodifier_numero_sommet(int iNumero)
 {
+	int iBoucle;
+	int iSize = sizeof(CSommet::piSOMstocke_numero) / sizeof(int);
+
+	//Vérifie que le numéro n'est pas déjà attribué à un sommet
+	for (iBoucle = 0; iBoucle < iSize; iBoucle++) {
+		if (CSommet::piSOMstocke_numero[iBoucle] == iNumero)
+			void();
+		//throw CException truc
+	}
+
 	iSOMNumero = iNumero;
 }
 
@@ -88,4 +98,34 @@ int CSommet::SOMlire_nb_entrant()
 int CSommet::SOMlire_nb_sortant()
 {
 	return iSOMNb_sortant;
+}
+
+void CSommet::SOMajouter_arc_entrant(CArc ARCarc)
+{
+	int iBoucle;
+	iSOMNb_entrant++;
+
+	CArc** pARCtemp = new CArc*[iSOMNb_entrant];
+	for (iBoucle = 0; iBoucle < iSOMNb_entrant - 1; iBoucle++) {
+		pARCtemp[iBoucle] = pSOMEntrant[iBoucle];
+	}
+	pARCtemp[iSOMNb_entrant] = &ARCarc;
+
+	delete[] pSOMEntrant;
+	pSOMEntrant = pARCtemp;
+}
+
+void CSommet::SOMajouter_arc_sortant(CArc ARCarc)
+{
+	int iBoucle;
+	iSOMNb_sortant++;
+
+	CArc** pARCtemp = new CArc*[iSOMNb_sortant];
+	for (iBoucle = 0; iBoucle < iSOMNb_sortant - 1; iBoucle++) {
+		pARCtemp[iBoucle] = pSOMSortant[iBoucle];
+	}
+	pARCtemp[iSOMNb_sortant] = &ARCarc;
+
+	delete[] pSOMSortant;
+	pSOMSortant = pARCtemp;
 }
