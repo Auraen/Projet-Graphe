@@ -34,7 +34,21 @@ void CGraphe::GRAsupprimer_sommet(CSommet SOMsommet)
 	int iNombreArcs = SOMsommet.iSOMNb_entrant + SOMsommet.iSOMNb_sortant;
 	iGRANb_arcs =iGRANb_arcs - iNombreArcs;
 	iGRANb_sommets = iGRANb_sommets - 1;
-	CGraphe::GRAsupprimer_sommet(SOMsommet);
+	int iBoucle1,iBoucle2;
+	int iSize = sizeof(CGraphe::pGRASommets) / sizeof(CSommet);
+	for (iBoucle1 = 0; iBoucle1 < iSize; iBoucle1++)
+	{
+		if (pGRASommets[iBoucle1].SOMlire_numero_sommet() == SOMsommet.SOMlire_numero_sommet())
+		{
+			for (iBoucle2 = iBoucle1; iBoucle2 < iSize; iBoucle2++)
+			{
+				pGRASommets[iBoucle2] = pGRASommets[iBoucle2 + 1];
+			}
+			delete[] pGRASommets[iSize];
+		}
+	}
+	
+
 
 }
 
