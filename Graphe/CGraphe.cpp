@@ -52,6 +52,7 @@ void CGraphe::GRAajouter_arc(int iSommet_depart, int iSommet_arrivee)
 	int iPosSomDep = -1;
 	int iPosSomArv = -1;
 
+	//Cherche la position dans le tableau des sommets en parametre
 	while ((iPosSomDep != -1 && iPosSomArv != -1) || iBoucle > iGRANb_sommets) {
 		if (iSommet_depart == pGRASommets[iBoucle]->SOMlire_numero_sommet)
 			iPosSomDep = iBoucle;
@@ -62,6 +63,7 @@ void CGraphe::GRAajouter_arc(int iSommet_depart, int iSommet_arrivee)
 		iBoucle++;
 	}
 
+	//ajoute l'arc dans les sommets concernes
 	if (iPosSomArv != -1 && iPosSomDep != -1) {
 		pGRASommets[iPosSomDep]->SOMajouter_arc_sortant(new CArc(iSommet_depart));
 		pGRASommets[iPosSomArv]->SOMajouter_arc_entrant(new CArc(iSommet_arrivee));

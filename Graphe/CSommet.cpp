@@ -1,7 +1,7 @@
 #include "CSommet.h"
 
 int CSommet::iSOMincremente_numero = 0;
-int* CSommet::piSOMstocke_numero = new int[1];
+int* CSommet::piSOMstocke_numero = (int*) realloc(CSommet::piSOMstocke_numero, 1);
 
 CSommet::CSommet()
 {
@@ -50,13 +50,8 @@ CSommet::CSommet(int iNumero)
 		CSommet::piSOMstocke_numero[0] = iNumero;
 	}
 	else {
-		int* piTemp = new int[iSize + 1];
-		for (iBoucle = 0; iBoucle < iSize; iBoucle++) {
-			piTemp[iBoucle] = CSommet::piSOMstocke_numero[iBoucle];
-		}
-		piTemp[iSize + 1] = iNumero;
-		delete[] CSommet::piSOMstocke_numero;
-		CSommet::piSOMstocke_numero = piTemp;
+		CSommet::piSOMstocke_numero = (int*) realloc(CSommet::piSOMstocke_numero, iSize + 1);
+		CSommet::piSOMstocke_numero[iSize + 1] = iNumero;
 	}
 
 	iSOMNb_entrant = 0;
@@ -68,6 +63,16 @@ CSommet::CSommet(int iNumero)
 
 CSommet::~CSommet()
 {
+	int iBoucle;
+	for (iBoucle = 0; iBoucle < iSOMNb_entrant; iBoucle++)
+	{
+		delete pSOMEntrant[iBoucle];
+	}
+	for (iBoucle = 0; iBoucle < iSOMNb_sortant; iBoucle++)
+	{
+		delete pSOMSortant[iBoucle];
+	}
+
 	free(pSOMEntrant);
 	free(pSOMSortant);
 }
@@ -87,7 +92,7 @@ void CSommet::SOMmodifier_numero_sommet(int iNumero)
 		void();
 		//throw CException truc
 	}
-	for (iBoucle = 0; iBoucle < iSize; iBoucle++) {	//Si le num a déjà été donné par l'utilisateur
+	for (iBoucle = 0; iBoucle < iSize; iBoucle++) {		//Si le num a déjà été donné par l'utilisateur
 		if (CSommet::piSOMstocke_numero[iBoucle] == iNumero)
 			void();
 		//throw CException truc
@@ -107,18 +112,64 @@ int CSommet::SOMlire_nb_sortant()
 	return iSOMNb_sortant;
 }
 
-void CSommet::SOMajouter_arc_entrant(CArc ARCarc)
+CArc* CSommet::SOMlire_arc_entrant(int iDestination)
+{
+	int iBoucle;
+	int iPosSomArv = -1;
+
+	//Cherche la position dans le tableau du sommet en parametre
+	while (iPosSomArv != -1 || iBoucle > iSOMNb_entrant) {
+		if (iDestination == pSOMEntrant[iBoucle]->ARClire_destination())
+			iPosSomArv = iBoucle;
+
+		iBoucle++;
+	}
+
+	//ajoute l'arc dans les sommets concernes
+	if (iPosSomArv != -1) {
+		return pSOMEntrant[iPosSomArv];
+	}
+	else {
+		void();
+		//throw exception: un des deux sommets n'existe pas
+	}
+}
+
+void CSommet::SOMajouter_arc_entrant(CArc* ARCarc)
 {
 	iSOMNb_entrant++;
 	pSOMEntrant = (CArc**)realloc(pSOMEntrant, sizeof(CArc)*iSOMNb_entrant);
 
-	pSOMEntrant[iSOMNb_entrant] = &ARCarc;
+	pSOMEntrant[iSOMNb_entrant] = ARCarc;
 }
 
-void CSommet::SOMajouter_arc_sortant(CArc ARCarc)
+CArc* CSommet::SOMlire_arc_sortant(int iDestination)
+{
+	int iBoucle;
+	int iPosSomDep = -1;
+
+	//Cherche la position dans le tableau du sommet en parametre
+	while (iPosSomDep != -1 || iBoucle > iSOMNb_sortant) {
+		if (iDestination == pSOMSortant[iBoucle]->ARClire_destination())
+			iPosSomDep = iBoucle;
+
+		iBoucle++;
+	}
+
+	//ajoute l'arc dans les sommets concernes
+	if (iPosSomDep != -1) {
+		return pSOMSortant[iPosSomDep];
+	}
+	else {
+		void();
+		//throw exception: un des deux sommets n'existe pas
+	}
+}
+
+void CSommet::SOMajouter_arc_sortant(CArc* ARCarc)
 {
 	iSOMNb_sortant++;
 	pSOMSortant = (CArc**)realloc(pSOMSortant, sizeof(CArc)*iSOMNb_sortant);
 
-	pSOMSortant[iSOMNb_sortant] = &ARCarc;
+	pSOMSortant[iSOMNb_sortant] = ARCarc;
 }
