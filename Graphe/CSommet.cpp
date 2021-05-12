@@ -23,9 +23,8 @@ CSommet::CSommet()
 	iSOMNb_entrant = 0;
 	iSOMNb_sortant = 0;
 
-	pSOMEntrant = new CArc*[iSOMNb_entrant];
-	pSOMSortant = new CArc *[iSOMNb_sortant];
-
+	pSOMEntrant = (CArc**)realloc(pSOMEntrant, sizeof(CArc)*iSOMNb_entrant);
+	pSOMSortant = (CArc**)realloc(pSOMSortant, sizeof(CArc)*iSOMNb_sortant);
 }
 
 CSommet::CSommet(int iNumero)
@@ -34,7 +33,11 @@ CSommet::CSommet(int iNumero)
 	int iSize = sizeof(CSommet::piSOMstocke_numero) / sizeof(int);
 
 	//Vérifie que le numéro n'est pas déjà attribué à un sommet
-	for (iBoucle = 0 ; iBoucle < iSize ; iBoucle++) {
+	if (iNumero < iSize-1) {							//Si le num a déjà été donné automatiquement
+		void();
+		//throw CException truc
+	}
+	for (iBoucle = 0 ; iBoucle < iSize ; iBoucle++) {	//Si le num a déjà été donné par l'utilisateur
 		if (CSommet::piSOMstocke_numero[iBoucle] == iNumero)
 			void();
 			//throw CException truc
@@ -59,14 +62,14 @@ CSommet::CSommet(int iNumero)
 	iSOMNb_entrant = 0;
 	iSOMNb_sortant = 0;
 
-	pSOMEntrant = new CArc*[iSOMNb_entrant];
-	pSOMSortant = new CArc *[iSOMNb_sortant];
+	pSOMEntrant = (CArc**)realloc(pSOMEntrant, sizeof(CArc)*iSOMNb_entrant);
+	pSOMSortant = (CArc**)realloc(pSOMSortant, sizeof(CArc)*iSOMNb_sortant);
 }
 
 CSommet::~CSommet()
 {
-	delete[] pSOMEntrant;
-	delete[] pSOMSortant;
+	free(pSOMEntrant);
+	free(pSOMSortant);
 }
 
 int CSommet::SOMlire_numero_sommet()
@@ -80,7 +83,11 @@ void CSommet::SOMmodifier_numero_sommet(int iNumero)
 	int iSize = sizeof(CSommet::piSOMstocke_numero) / sizeof(int);
 
 	//Vérifie que le numéro n'est pas déjà attribué à un sommet
-	for (iBoucle = 0; iBoucle < iSize; iBoucle++) {
+	if (iNumero < iSize - 1) {							//Si le num a déjà été donné automatiquement
+		void();
+		//throw CException truc
+	}
+	for (iBoucle = 0; iBoucle < iSize; iBoucle++) {	//Si le num a déjà été donné par l'utilisateur
 		if (CSommet::piSOMstocke_numero[iBoucle] == iNumero)
 			void();
 		//throw CException truc
@@ -102,30 +109,16 @@ int CSommet::SOMlire_nb_sortant()
 
 void CSommet::SOMajouter_arc_entrant(CArc ARCarc)
 {
-	int iBoucle;
 	iSOMNb_entrant++;
+	pSOMEntrant = (CArc**)realloc(pSOMEntrant, sizeof(CArc)*iSOMNb_entrant);
 
-	CArc** pARCtemp = new CArc*[iSOMNb_entrant];
-	for (iBoucle = 0; iBoucle < iSOMNb_entrant - 1; iBoucle++) {
-		pARCtemp[iBoucle] = pSOMEntrant[iBoucle];
-	}
-	pARCtemp[iSOMNb_entrant] = &ARCarc;
-
-	delete[] pSOMEntrant;
-	pSOMEntrant = pARCtemp;
+	pSOMEntrant[iSOMNb_entrant] = &ARCarc;
 }
 
 void CSommet::SOMajouter_arc_sortant(CArc ARCarc)
 {
-	int iBoucle;
 	iSOMNb_sortant++;
+	pSOMSortant = (CArc**)realloc(pSOMSortant, sizeof(CArc)*iSOMNb_sortant);
 
-	CArc** pARCtemp = new CArc*[iSOMNb_sortant];
-	for (iBoucle = 0; iBoucle < iSOMNb_sortant - 1; iBoucle++) {
-		pARCtemp[iBoucle] = pSOMSortant[iBoucle];
-	}
-	pARCtemp[iSOMNb_sortant] = &ARCarc;
-
-	delete[] pSOMSortant;
-	pSOMSortant = pARCtemp;
+	pSOMSortant[iSOMNb_sortant] = &ARCarc;
 }

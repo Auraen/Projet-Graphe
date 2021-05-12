@@ -2,11 +2,11 @@
 
 CGraphe::CGraphe() {
 	iGRANb_sommets = 0;
-	pGRASommets = new CSommet[iGRANb_sommets];
+	pGRASommets = (CSommet*) realloc(pGRASommets, sizeof(CSommet)*iGRANb_sommets);
 }
 
 CGraphe::~CGraphe() {
-	delete[] pGRASommets;
+	free(pGRASommets);
 }
 
 int CGraphe::GRAlire_nb_sommet()
