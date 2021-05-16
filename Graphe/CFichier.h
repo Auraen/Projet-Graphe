@@ -27,6 +27,7 @@
 
 #include "CGraphe.h"
 
+#pragma warning(disable : 4996)
 
 class CFichier
 {

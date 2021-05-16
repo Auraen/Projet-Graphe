@@ -4,6 +4,8 @@
 #include <iostream>
 #include <assert.h>
 
+#include "CExceptions.h"
+
 using namespace std;
 
 class CArc

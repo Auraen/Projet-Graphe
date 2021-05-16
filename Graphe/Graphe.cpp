@@ -1,20 +1,37 @@
-// Graphe.cpp : Ce fichier contient la fonction 'main'. L'exécution du programme commence et se termine à cet endroit.
-//
+/*****************************************************************//**
+ * \file   Graphe.cpp
+ * \brief  Ce fichier contient le main du programme.
+ *
+ * \author Aurane
+ * \date   May 2021
+ *********************************************************************/
 
 #include <iostream>
+#include <assert.h>
 
-int main()
+#include "CFichier.h"
+
+using namespace std;
+
+int main(int argc, char* argv[])
 {
-    std::cout << "Hello World!\n";
+	if (argc > 1) {
+		CGraphe *GRAListe_Graphes = new CGraphe[argc - 1];
+		int iBoucle;
+
+		//Extraction des matrices en lisant les fichiers
+		for (iBoucle = 0; iBoucle < argc - 1; iBoucle++)
+		{
+			GRAListe_Graphes[iBoucle] = CFichier::FIClire_graphe(argv[iBoucle + 1]);
+		}
+
+		delete[] GRAListe_Graphes;
+
+		cout << endl << "Fin du programme";
+
+	}
+	else {
+		cout << "Veuillez donner le nom d'un fichier en parametre lors de l'appel du programme" << endl;
+		return 1;
+	}
 }
-
-// Exécuter le programme : Ctrl+F5 ou menu Déboguer > Exécuter sans débogage
-// Déboguer le programme : F5 ou menu Déboguer > Démarrer le débogage
-
-// Astuces pour bien démarrer : 
-//   1. Utilisez la fenêtre Explorateur de solutions pour ajouter des fichiers et les gérer.
-//   2. Utilisez la fenêtre Team Explorer pour vous connecter au contrôle de code source.
-//   3. Utilisez la fenêtre Sortie pour voir la sortie de la génération et d'autres messages.
-//   4. Utilisez la fenêtre Liste d'erreurs pour voir les erreurs.
-//   5. Accédez à Projet > Ajouter un nouvel élément pour créer des fichiers de code, ou à Projet > Ajouter un élément existant pour ajouter des fichiers de code existants au projet.
-//   6. Pour rouvrir ce projet plus tard, accédez à Fichier > Ouvrir > Projet et sélectionnez le fichier .sln.

@@ -127,7 +127,7 @@ void CSommet::SOMajouter_arc_entrant(CArc* ARCarc)
 
 CArc** CSommet::SOMlire_arc_sortant()
 {
-	return pSOMSortant
+	return pSOMSortant;
 }
 
 void CSommet::SOMajouter_arc_sortant(CArc* ARCarc)
@@ -140,11 +140,11 @@ void CSommet::SOMajouter_arc_sortant(CArc* ARCarc)
 
 void CSommet::SOMsupprimer_arc_entrant(int iDestination)
 {
-	int iBoucle;
+	int iBoucle = 0;
 	int iPos = -1;
 
 	while (iPos == -1 && iBoucle < iSOMNb_entrant) {
-		if (iDestination == pSOMEntrant[iBoucle]->ARClire_destination)
+		if (iDestination == pSOMEntrant[iBoucle]->ARClire_destination())
 			iPos = iBoucle;
 
 		iBoucle++;
@@ -170,11 +170,11 @@ void CSommet::SOMsupprimer_arc_entrant(int iDestination)
 
 void CSommet::SOMsupprimer_arc_sortant(int iDestination)
 {
-	int iBoucle;
+	int iBoucle = 0;
 	int iPos = -1;
 
 	while (iPos == -1 && iBoucle < iSOMNb_sortant) {
-		if (iDestination == pSOMSortant[iBoucle]->ARClire_destination)
+		if (iDestination == pSOMSortant[iBoucle]->ARClire_destination())
 			iPos = iBoucle;
 
 		iBoucle++;

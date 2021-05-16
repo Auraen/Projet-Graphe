@@ -9,8 +9,9 @@ void CActions::ACTmodifier_arc(CArc ARCarc, int iNouvelle_dest)
 	ARCarc.ARCmodifier_destination(iNouvelle_dest);
 }
 
-CGraphe ACTafficher_graphe(CGraphe GRAgraphe)
+/*CGraphe ACTafficher_graphe(CGraphe GRAgraphe)
 {
+	
 	int iBoucle, jBoucle;
 	cout << "Affige de grahe"<<endl;
 	for (iBoucle = 0; iBoucle < GRAgraphe.iGRANb_sommets ; iBoucle++)
@@ -30,6 +31,5 @@ CGraphe ACTafficher_graphe(CGraphe GRAgraphe)
 		}
 	}
 	
-
-}
+}*/
 

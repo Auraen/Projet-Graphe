@@ -15,7 +15,7 @@
   */
 void CFichier::FICsupprime_espace(char * pcStr)
 {
-	int iBoucle;
+	size_t iBoucle;
 	int iRepere = 0;
 	size_t iLength = strlen(pcStr);
 
@@ -116,46 +116,6 @@ CGraphe CFichier::FIClire_graphe(char * pcNom)
 			iPosFin = GRAResult.GRAposition_sommet(atoi(cBuffer));
 
 			GRAResult.GRAajouter_arc(iPosDebut, iPosFin);
-		}
-
-		int iLine, iColumn;
-		double dElement;
-		int iNb_Line = GRAResult.MATlire_nb_line();
-		int iNb_Column = GRAResult.MATlire_nb_column();
-
-		for (iLine = 0; iLine < iNb_Line; iLine++)
-		{
-			if (cLine[0] == '\t') {
-				FICsupprime_espace(cLine);
-			}
-
-			cBuffer = strtok(cLine, " ");
-
-			while (cLine[0] == '\n' || cLine[0] == '\r' || cLine[0] == '\0')
-			{
-				fichier.getline(cLine, 2048);
-				cBuffer = strtok(NULL, " ");
-			}
-
-			for (iColumn = 0; iColumn < iNb_Column; iColumn++) {
-
-				if (cBuffer == nullptr) {
-					throw CExceptions(EXCNenough_Val);
-				}
-
-				dElement = atof(cBuffer);
-				GRAResult.MATmodifier_element(iLine, iColumn, dElement);
-				cBuffer = strtok(NULL, " ");
-			}
-
-			if (cBuffer != nullptr) {
-				throw CExceptions(EXCToo_much_Val);
-			}
-
-			do
-			{
-				fichier.getline(cLine, 2048);
-			} while (cLine[0] == '\n' || cLine[0] == '\r' || cLine[0] == '\0');
 		}
 
 		delete[] cLine;
