@@ -112,27 +112,9 @@ int CSommet::SOMlire_nb_sortant()
 	return iSOMNb_sortant;
 }
 
-CArc* CSommet::SOMlire_arc_entrant(int iDestination)
+CArc** CSommet::SOMlire_arc_entrant()
 {
-	int iBoucle;
-	int iPosSomArv = -1;
-
-	//Cherche la position dans le tableau du sommet en parametre
-	while (iPosSomArv != -1 || iBoucle > iSOMNb_entrant) {
-		if (iDestination == pSOMEntrant[iBoucle]->ARClire_destination())
-			iPosSomArv = iBoucle;
-
-		iBoucle++;
-	}
-
-	//ajoute l'arc dans les sommets concernes
-	if (iPosSomArv != -1) {
-		return pSOMEntrant[iPosSomArv];
-	}
-	else {
-		void();
-		//throw exception: un des deux sommets n'existe pas
-	}
+	return pSOMEntrant;
 }
 
 void CSommet::SOMajouter_arc_entrant(CArc* ARCarc)
@@ -143,27 +125,9 @@ void CSommet::SOMajouter_arc_entrant(CArc* ARCarc)
 	pSOMEntrant[iSOMNb_entrant] = ARCarc;
 }
 
-CArc* CSommet::SOMlire_arc_sortant(int iDestination)
+CArc** CSommet::SOMlire_arc_sortant()
 {
-	int iBoucle;
-	int iPosSomDep = -1;
-
-	//Cherche la position dans le tableau du sommet en parametre
-	while (iPosSomDep != -1 || iBoucle > iSOMNb_sortant) {
-		if (iDestination == pSOMSortant[iBoucle]->ARClire_destination())
-			iPosSomDep = iBoucle;
-
-		iBoucle++;
-	}
-
-	//ajoute l'arc dans les sommets concernes
-	if (iPosSomDep != -1) {
-		return pSOMSortant[iPosSomDep];
-	}
-	else {
-		void();
-		//throw exception: un des deux sommets n'existe pas
-	}
+	return pSOMSortant
 }
 
 void CSommet::SOMajouter_arc_sortant(CArc* ARCarc)
@@ -173,3 +137,65 @@ void CSommet::SOMajouter_arc_sortant(CArc* ARCarc)
 
 	pSOMSortant[iSOMNb_sortant] = ARCarc;
 }
+
+void CSommet::SOMsupprimer_arc_entrant(int iDestination)
+{
+	int iBoucle;
+	int iPos = -1;
+
+	while (iPos == -1 && iBoucle < iSOMNb_entrant) {
+		if (iDestination == pSOMEntrant[iBoucle]->ARClire_destination)
+			iPos = iBoucle;
+
+		iBoucle++;
+	}
+
+	if (iPos == -1) {
+		void();
+		//Throw cexception il n'existe pas d'arc ayant cette destination
+	}
+
+	delete pSOMEntrant[iPos];
+	iSOMNb_entrant--;
+
+	for (iBoucle = iPos; iBoucle < iSOMNb_entrant; iBoucle++) {
+		pSOMEntrant[iBoucle] = pSOMEntrant[iBoucle + 1];
+	}
+	
+	if (iSOMNb_entrant == 0) {
+		free(pSOMEntrant);
+	}else
+		pSOMEntrant = (CArc**)realloc(pSOMEntrant, sizeof(CArc*)*iSOMNb_entrant);
+}
+
+void CSommet::SOMsupprimer_arc_sortant(int iDestination)
+{
+	int iBoucle;
+	int iPos = -1;
+
+	while (iPos == -1 && iBoucle < iSOMNb_sortant) {
+		if (iDestination == pSOMSortant[iBoucle]->ARClire_destination)
+			iPos = iBoucle;
+
+		iBoucle++;
+	}
+
+	if (iPos == -1) {
+		void();
+		//Throw cexception il n'existe pas d'arc ayant cette destination
+	}
+
+	delete pSOMSortant[iPos];
+	iSOMNb_sortant--;
+
+	for (iBoucle = iPos; iBoucle < iSOMNb_sortant; iBoucle++) {
+		pSOMSortant[iBoucle] = pSOMSortant[iBoucle + 1];
+	}
+
+	if (iSOMNb_sortant == 0) {
+		free(pSOMSortant);
+	}
+	else
+		pSOMSortant = (CArc**)realloc(pSOMSortant, sizeof(CArc*)*iSOMNb_sortant);
+}
+

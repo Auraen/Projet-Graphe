@@ -25,9 +25,11 @@ public:
 	void SOMmodifier_numero_sommet(int iNumero);
 	int SOMlire_nb_entrant();
 	int SOMlire_nb_sortant();
-	CArc* SOMlire_arc_entrant(int iDestination);
+	CArc** SOMlire_arc_entrant();
 	void SOMajouter_arc_entrant(CArc* ARCarc);
-	CArc* SOMlire_arc_sortant(int iDestination);
+	CArc** SOMlire_arc_sortant();
 	void SOMajouter_arc_sortant(CArc* ARCarc);
+	void SOMsupprimer_arc_entrant(int iDestination);
+	void SOMsupprimer_arc_sortant(int iDestination);
 };
 #endif

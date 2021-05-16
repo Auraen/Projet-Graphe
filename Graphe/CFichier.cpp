@@ -61,7 +61,7 @@ CGraphe CFichier::FIClire_graphe(char * pcNom)
 		if (cBuffer == NULL) {
 			throw CExceptions(EXCParse);
 		}
-		GRAResult.GRAmodifier_nb_sommet(atoi(cBuffer));
+		int iNbSommets = atoi(cBuffer);
 
 		//Nb d'arcs
 		do
@@ -72,10 +72,10 @@ CGraphe CFichier::FIClire_graphe(char * pcNom)
 		cBuffer = strtok(cLine, "=");
 		cBuffer = strtok(NULL, "=");
 
-		if (cBuffer == NULL) {
+		if (cBuffer == NULL) {																																																																												 
 			throw CExceptions(EXCParse);
 		}
-		GRAResult.GRAmodifier_nb_arcs(atoi(cBuffer));
+		int iNbArcs = atoi(cBuffer);
 
 		//Numéro du sommet
 		do
@@ -83,7 +83,40 @@ CGraphe CFichier::FIClire_graphe(char * pcNom)
 			fichier.getline(cLine, 2048);  // Ligne avec ecrit Sommets = [
 			FICsupprime_espace(cLine);
 		} while (cLine[0] == '\n' || cLine[0] == '\r' || cLine[0] == '\0');
-		fichier.getline(cLine, 2048); // Premiere ligne avec le numéro du sommet
+
+		int iBoucle;
+
+		for (iBoucle = 0; iBoucle < iNbSommets; iBoucle++) {
+			fichier.getline(cLine, 2048); //Ligne avec le numéro du sommet
+			cBuffer = strtok(cLine, "=");
+			cBuffer = strtok(NULL, "=");
+			GRAResult.GRAajouter_sommet(new CSommet(atoi(cBuffer)));
+		}
+
+		//Différents arcs
+		do
+		{
+			fichier.getline(cLine, 2048);  // Ligne avec ecrit Arcs = [
+			FICsupprime_espace(cLine);
+		} while (cLine[0] == '\n' || cLine[0] == '\r' || cLine[0] == '\0');
+		
+		int iPosDebut;
+		int iPosFin;
+
+		for (iBoucle = 0; iBoucle < iNbArcs; iBoucle++) {
+			fichier.getline(cLine, 2048); // Premiere ligne avec un arc
+			cBuffer = strtok(cLine, "="); //Début=
+			cBuffer = strtok(NULL, "="); //n°debut
+			
+			iPosDebut = GRAResult.GRAposition_sommet(atoi(cBuffer));
+
+			cBuffer = strtok(NULL, "="); //Fin=
+			cBuffer = strtok(NULL, "="); //n°fin
+			
+			iPosFin = GRAResult.GRAposition_sommet(atoi(cBuffer));
+
+			GRAResult.GRAajouter_arc(iPosDebut, iPosFin);
+		}
 
 		int iLine, iColumn;
 		double dElement;

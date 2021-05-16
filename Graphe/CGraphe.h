@@ -18,9 +18,10 @@ public:
 	CGraphe(int iNbSommets, CSommet** pSommet);
 	~CGraphe();
 	void GRAajouter_sommet(CSommet* pSommet);
-	void GRAsupprimer_sommet(CSommet SOMsommet);
+	void GRAsupprimer_sommet(int iNumSommet);
 	int GRAlire_nb_sommet();
 	void GRAajouter_arc(int iSommet_depart, int iSommet_arrivee);
 	int GRAlire_nb_arcs();
+	int GRAposition_sommet(int iNum_sommet);
 };
 #endif

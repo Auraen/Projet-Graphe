@@ -32,13 +32,46 @@ void CGraphe::GRAajouter_sommet(CSommet* pSommet)
 }
 
 
-void CGraphe::GRAsupprimer_sommet(CSommet SOMsommet)
+void CGraphe::GRAsupprimer_sommet(int iNumSommet)
 {
+	int iPos = GRAposition_sommet(iNumSommet);
+	int iNbEntrant = pGRASommets[iPos]->SOMlire_nb_entrant;
+	int iNbSortant = pGRASommets[iPos]->SOMlire_nb_sortant;
+	CArc** ARCEntrant = pGRASommets[iPos]->SOMlire_arc_entrant;
+	CArc** ARCSortant = pGRASommets[iPos]->SOMlire_arc_sortant;
+
+	int iBoucle;
+	int dest;
+
+	//Suppression des arcs entrants du sommet
+	for (iBoucle = 0; iBoucle < iNbEntrant; iBoucle++) {
+		dest = ARCEntrant[iBoucle]->ARClire_destination;
+		pGRASommets[dest]->SOMsupprimer_arc_sortant(iNumSommet);	//On supprime l'arc dans l'autre sommet
+		pGRASommets[iPos]->SOMsupprimer_arc_entrant(dest);			//On supprime l'arc dans le sommet à suppr
+	}
+	
+	//Suppression des arcs sortants du sommet
+	for (iBoucle = 0; iBoucle < iNbSortant; iBoucle++) {
+		dest = ARCSortant[iBoucle]->ARClire_destination;
+		pGRASommets[dest]->SOMsupprimer_arc_entrant(iNumSommet);	//On supprime l'arc dans l'autre sommet
+		pGRASommets[iPos]->SOMsupprimer_arc_sortant(dest);			//On supprime l'arc dans le sommet à suppr
+	}
+
+	for (iBoucle = iPos; iBoucle < iGRANb_sommets-1; iBoucle++) {
+		pGRASommets[iBoucle] = pGRASommets[iBoucle + 1];
+	}
+
+	iGRANb_sommets--;
+
+	pGRASommets = (CSommet**)realloc(pGRASommets, sizeof(CSommet)*iGRANb_sommets);
+
+	/*Code Youssef
+	
 	int iNombreArcs = SOMsommet.iSOMNb_entrant + SOMsommet.iSOMNb_sortant;
 	iGRANb_arcs = iGRANb_arcs - iNombreArcs;
 	iGRANb_sommets = iGRANb_sommets - 1;
 	CGraphe::GRAsupprimer_sommet(SOMsommet);
-
+	*/
 }
 
 int CGraphe::GRAlire_nb_sommet()
@@ -49,29 +82,11 @@ int CGraphe::GRAlire_nb_sommet()
 void CGraphe::GRAajouter_arc(int iSommet_depart, int iSommet_arrivee)
 {
 	int iBoucle;
-	int iPosSomDep = -1;
-	int iPosSomArv = -1;
+	int iPosSomDep = GRAposition_sommet(iSommet_depart);
+	int iPosSomArv = GRAposition_sommet(iSommet_arrivee);
 
-	//Cherche la position dans le tableau des sommets en parametre
-	while ((iPosSomDep != -1 && iPosSomArv != -1) || iBoucle > iGRANb_sommets) {
-		if (iSommet_depart == pGRASommets[iBoucle]->SOMlire_numero_sommet)
-			iPosSomDep = iBoucle;
-
-		if (iSommet_arrivee == pGRASommets[iBoucle]->SOMlire_numero_sommet)
-			iPosSomArv = iBoucle;
-
-		iBoucle++;
-	}
-
-	//ajoute l'arc dans les sommets concernes
-	if (iPosSomArv != -1 && iPosSomDep != -1) {
-		pGRASommets[iPosSomDep]->SOMajouter_arc_sortant(new CArc(iSommet_depart));
-		pGRASommets[iPosSomArv]->SOMajouter_arc_entrant(new CArc(iSommet_arrivee));
-	}
-	else {
-		void();
-		//throw exception: un des deux sommets n'existe pas
-	}
+	pGRASommets[iPosSomDep]->SOMajouter_arc_sortant(new CArc(iSommet_depart));
+	pGRASommets[iPosSomArv]->SOMajouter_arc_entrant(new CArc(iSommet_arrivee));
 }
 
 /*void CGraphe::GRAsupprimer_sommet(CSommet SOMsommet)
@@ -103,4 +118,24 @@ DANS LA MAUVAISE CLASSE ->> A DEPLACER*/
 int CGraphe::GRAlire_nb_arcs()
 {
 	return iGRANb_arcs;
+}
+
+int CGraphe::GRAposition_sommet(int iNum_sommet)
+{
+	int iBoucle;
+	int iPosSom = -1;
+
+	//Cherche la position dans le tableau des sommets en parametre
+	while (iPosSom != -1 || iBoucle > iGRANb_sommets) {
+		if (iNum_sommet == pGRASommets[iBoucle]->SOMlire_numero_sommet)
+			iPosSom = iBoucle;
+		iBoucle++;
+	}
+	
+	if (iPosSom == -1) {
+		void();
+		//throw exception: le num de sommet n'appartient pas au tab
+	}
+
+	return iPosSom;
 }
