@@ -11,6 +11,7 @@ class CActions
 {
 public:
 	static void ACTmodifier_arc(CArc ARCarc,int iNouvelle_Dest);
+	void ACTsupprimer_arc(int iDepart, int iArrivee);
 	static void ACTafficher_graphe(CGraphe GRAgraphe);
 	static CGraphe ACTinverser(CGraphe GRAgraphe);
 };
