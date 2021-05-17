@@ -72,7 +72,7 @@ CGraphe CFichier::FIClire_graphe(char * pcNom)
 		cBuffer = strtok(cLine, "=");
 		cBuffer = strtok(NULL, "=");
 
-		if (cBuffer == NULL) {																																																																												 
+		if (cBuffer == NULL) {
 			throw CExceptions(EXCParse);
 		}
 		int iNbArcs = atoi(cBuffer);
@@ -98,24 +98,23 @@ CGraphe CFichier::FIClire_graphe(char * pcNom)
 		{
 			fichier.getline(cLine, 2048);  // Ligne avec ecrit Arcs = [
 			FICsupprime_espace(cLine);
-		} while (cLine[0] == '\n' || cLine[0] == '\r' || cLine[0] == '\0');
+		} while (cLine[0] == '\n' || cLine[0] == '\r' || cLine[0] == '\0' || cLine[0] == ']');
 		
-		int iPosDebut;
-		int iPosFin;
+		int iDebut;
+		int iFin;
 
 		for (iBoucle = 0; iBoucle < iNbArcs; iBoucle++) {
 			fichier.getline(cLine, 2048); // Premiere ligne avec un arc
 			cBuffer = strtok(cLine, "="); //Début=
 			cBuffer = strtok(NULL, "="); //n°debut
 			
-			iPosDebut = GRAResult.GRAposition_sommet(atoi(cBuffer));
+			iDebut = atoi(cBuffer);
 
-			cBuffer = strtok(NULL, "="); //Fin=
-			cBuffer = strtok(NULL, "="); //n°fin
+			cBuffer = strtok(NULL, "="); //n° fin
 			
-			iPosFin = GRAResult.GRAposition_sommet(atoi(cBuffer));
+			iFin = atoi(cBuffer);
 
-			GRAResult.GRAajouter_arc(iPosDebut, iPosFin);
+			GRAResult.GRAajouter_arc(iDebut, iFin);
 		}
 
 		delete[] cLine;
