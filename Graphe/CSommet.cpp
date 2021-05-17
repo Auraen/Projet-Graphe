@@ -1,7 +1,7 @@
 #include "CSommet.h"
 
 int CSommet::iSOMincremente_numero = 0;
-int* CSommet::piSOMstocke_numero = (int*) realloc(CSommet::piSOMstocke_numero, 1);
+int* CSommet::piSOMstocke_numero = NULL;
 
 CSommet::CSommet()
 {
@@ -30,7 +30,15 @@ CSommet::CSommet()
 CSommet::CSommet(int iNumero)
 {
 	int iBoucle;
-	int iSize = sizeof(CSommet::piSOMstocke_numero) / sizeof(int);
+	int iSize;
+	if (CSommet::piSOMstocke_numero != NULL) {
+		iSize = sizeof(CSommet::piSOMstocke_numero) / sizeof(int);
+	}
+	else
+	{
+		iSize = 0;
+		CSommet::piSOMstocke_numero = (int*)realloc(CSommet::piSOMstocke_numero, iSize + 1);
+	}
 
 	//Vérifie que le numéro n'est pas déjà attribué à un sommet
 	if (iNumero < iSize-1) {							//Si le num a déjà été donné automatiquement
@@ -44,14 +52,14 @@ CSommet::CSommet(int iNumero)
 	}
 
 	iSOMNumero = iNumero;
-
+	iSize++;
 	//Stocke le numéro donné par l'utilisateur
-	if (iSize = 1) {
+	if (iSize == 1) {
 		CSommet::piSOMstocke_numero[0] = iNumero;
 	}
 	else {
-		CSommet::piSOMstocke_numero = (int*) realloc(CSommet::piSOMstocke_numero, iSize + 1);
-		CSommet::piSOMstocke_numero[iSize + 1] = iNumero;
+		CSommet::piSOMstocke_numero = (int*) realloc(CSommet::piSOMstocke_numero, iSize);
+		CSommet::piSOMstocke_numero[iSize-1] = iNumero;
 	}
 
 	iSOMNb_entrant = 0;
@@ -64,14 +72,17 @@ CSommet::CSommet(int iNumero)
 CSommet::~CSommet()
 {
 	int iBoucle;
+
 	for (iBoucle = 0; iBoucle < iSOMNb_entrant; iBoucle++)
 	{
 		delete pSOMEntrant[iBoucle];
 	}
+
 	for (iBoucle = 0; iBoucle < iSOMNb_sortant; iBoucle++)
 	{
 		delete pSOMSortant[iBoucle];
 	}
+
 
 	free(pSOMEntrant);
 	free(pSOMSortant);
@@ -85,7 +96,14 @@ int CSommet::SOMlire_numero_sommet()
 void CSommet::SOMmodifier_numero_sommet(int iNumero)
 {
 	int iBoucle;
-	int iSize = sizeof(CSommet::piSOMstocke_numero) / sizeof(int);
+	int iSize;
+	if (CSommet::piSOMstocke_numero != NULL) {
+		iSize = sizeof(CSommet::piSOMstocke_numero) / sizeof(int);
+	}
+	else
+	{
+		iSize = 0;
+	}
 
 	//Vérifie que le numéro n'est pas déjà attribué à un sommet
 	if (iNumero < iSize - 1) {							//Si le num a déjà été donné automatiquement
@@ -122,7 +140,7 @@ void CSommet::SOMajouter_arc_entrant(CArc* ARCarc)
 	iSOMNb_entrant++;
 	pSOMEntrant = (CArc**)realloc(pSOMEntrant, sizeof(CArc)*iSOMNb_entrant);
 
-	pSOMEntrant[iSOMNb_entrant] = ARCarc;
+	pSOMEntrant[iSOMNb_entrant-1] = ARCarc;
 }
 
 CArc** CSommet::SOMlire_arc_sortant()
@@ -135,7 +153,7 @@ void CSommet::SOMajouter_arc_sortant(CArc* ARCarc)
 	iSOMNb_sortant++;
 	pSOMSortant = (CArc**)realloc(pSOMSortant, sizeof(CArc)*iSOMNb_sortant);
 
-	pSOMSortant[iSOMNb_sortant] = ARCarc;
+	pSOMSortant[iSOMNb_sortant-1] = ARCarc;
 }
 
 void CSommet::SOMsupprimer_arc_entrant(int iDestination)
