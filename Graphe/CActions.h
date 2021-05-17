@@ -10,8 +10,8 @@
 class CActions
 {
 public:
-	static void ACTmodifier_arc(CArc ARCarc,int iNouvelle_Dest);
-	void ACTsupprimer_arc(int iDepart, int iArrivee);
+	static void ACTmodifier_arc(CGarphe GRAgraphe, CArc ARCarc, int iNouvelle_Dest);
+	static void ACTsupprimer_arc(CGraphe GRAgraphe, int iDepart, int iArrivee);
 	static void ACTafficher_graphe(CGraphe GRAgraphe);
 	static CGraphe ACTinverser(CGraphe GRAgraphe);
 };
