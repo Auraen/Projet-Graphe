@@ -20,8 +20,3 @@ int CArc::ARClire_destination()
 	return iARCDestination;
 }
 
-void CArc::ARCmodifier_destination(int iDestination)
-{
-	iARCDestination = iDestination;
-}
-

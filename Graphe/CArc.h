@@ -18,6 +18,5 @@ public:
 	CArc(int iDestination);
 	~CArc();
 	int ARClire_destination();
-	void ARCmodifier_destination(int iDestination);
 };
 #endif

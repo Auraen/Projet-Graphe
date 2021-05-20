@@ -21,7 +21,10 @@ public:
 	void GRAsupprimer_sommet(int iNumSommet);
 	int GRAlire_nb_sommet();
 	void GRAajouter_arc(int iSommet_depart, int iSommet_arrivee);
+	void GRAsupprimer_arc(int iDepart, int iArrivee);
 	int GRAlire_nb_arcs();
 	int GRAposition_sommet(int iNum_sommet);
+	static void GRAafficher_graphe();
+	static CGraphe GRAinverser();
 };
 #endif

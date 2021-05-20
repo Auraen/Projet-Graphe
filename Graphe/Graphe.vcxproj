@@ -151,7 +151,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CActions.cpp" />
     <ClCompile Include="CArc.cpp" />
     <ClCompile Include="CExceptions.cpp" />
     <ClCompile Include="CFichier.cpp" />
@@ -160,7 +159,6 @@
     <ClCompile Include="Graphe.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CActions.h" />
     <ClInclude Include="CArc.h" />
     <ClInclude Include="CExceptions.h" />
     <ClInclude Include="CFichier.h" />

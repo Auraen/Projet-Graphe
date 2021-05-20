@@ -26,8 +26,8 @@ public:
 	int SOMlire_nb_entrant();
 	int SOMlire_nb_sortant();
 	CArc** SOMlire_arc_entrant();
-	void SOMajouter_arc_entrant(CArc* ARCarc);
 	CArc** SOMlire_arc_sortant();
+	void SOMajouter_arc_entrant(CArc* ARCarc);
 	void SOMajouter_arc_sortant(CArc* ARCarc);
 	void SOMsupprimer_arc_entrant(int iDestination);
 	void SOMsupprimer_arc_sortant(int iDestination);
