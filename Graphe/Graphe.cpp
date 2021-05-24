@@ -15,23 +15,20 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-	if (argc > 1) {
-		CGraphe *GRAListe_Graphes = new CGraphe[argc - 1];
-		int iBoucle;
+	if (argc == 2) {
 
-		//Extraction des matrices en lisant les fichiers
-		for (iBoucle = 0; iBoucle < argc - 1; iBoucle++)
-		{
-			GRAListe_Graphes[iBoucle] = CFichier::FIClire_graphe(argv[iBoucle + 1]);
-		}
+		CGraphe GRAGraphe_extrait = CFichier::FIClire_graphe(argv[1]);
+		cout << "Le graphe extrait du fichier est:" << endl;
+		GRAGraphe_extrait.GRAafficher_graphe;
 
-		delete[] GRAListe_Graphes;
+		CGraphe GRAGraphe_inverse = GRAGraphe_extrait.GRAinverser;
+		cout << endl << endl << "L'inverse de ce graphe est:" << endl;
+		GRAGraphe_inverse.GRAafficher_graphe;
 
-		cout << endl << "Fin du programme";
-
+		cout << endl << endl << "Fin du programme";
 	}
 	else {
-		cout << "Veuillez donner le nom d'un fichier en parametre lors de l'appel du programme" << endl;
+		cout << "Veuillez donner le nom d'un seul fichier en parametre lors de l'appel du programme" << endl;
 		return 1;
 	}
 }
