@@ -193,29 +193,61 @@ int CGraphe::GRAposition_sommet(int iNum_sommet)
 	return iPosSom;
 }
 
-//void CGraphe::GRAafficher_graphe()
-{
-	/*CGraphe CActions::ACTafficher_graphe(CGraphe GRAgraphe)
+
+
+	void CGraphe::GRAafficher_graphe()
 {
 
-	int iBoucle, jBoucle;
-	cout << "Affige de grahe"<<endl;
-	for (iBoucle = 0; iBoucle < GRAgraphe.iGRANb_sommets ; iBoucle++)
+	   int iBoucle, jBoucle;
+	   cout << "Affichage de grahe"<<endl;
+	   for (iBoucle = 0; iBoucle < iGRANb_sommets ; iBoucle++)
+	   {
+		  cout << "sommet numéro:" << iBoucle<<endl;
+		  cout <<pGRASommets[iBoucle] << endl;
+		  cout << "les prochains sommets  sont"<<endl;
+
+		  CArc **ArcSortant = pGRASommets[iBoucle]->SOMlire_arc_sortant();
+		  for (jBoucle = 0; jBoucle < pGRASommets[iBoucle]->SOMlire_nb_sortant(); jBoucle++)
+		  {
+			  if (ArcSortant[jBoucle] != NULL) {
+				  cout <<ArcSortant[jBoucle]->ARClire_destination() << endl;
+			  }
+			  else {
+				  cout << "pas d'arc sortant";
+			  }
+		  }
+	   }
+
+}
+
+	CGraphe CGraphe::GRAinverser() 
 	{
-		cout << "sommet numéro:" << iBoucle;
-		cout << GRAgraphe.pGRASommets[iBoucle] << endl;
-		cout << "les prochains sommets  sont";
-		for (jBoucle = 0; jBoucle < GRAgraphe.pGRASommets[iBoucle].pSOMSortant->iSOMNb_sortant ; jBoucle++)
+		
+		int iBoucle = 0;
+		int jBoucle = 0;
+		int kBoucle = 0;
+		if (iGRANb_sommets > 0)
 		{
-			if (GRAgraphe.pGRASommets[iBoucle].pSOMSortant[jBoucle] != NULL) {
+			for (iBoucle = 0; iBoucle < iGRANb_sommets; iBoucle++)
+			{
+				CArc** TempArc1 = pGRASommets[iBoucle]->SOMlire_arc_entrant();
+				CArc** TempArc2 = pGRASommets[iBoucle]->SOMlire_arc_sortant();
+				for (jBoucle = 0; jBoucle < pGRASommets[iBoucle]->SOMlire_nb_entrant(); jBoucle++) 
+				{
+					pGRASommets[iBoucle]->SOMsupprimer_arc_entrant(TempArc1[jBoucle]->ARClire_destination());
+					pGRASommets[iBoucle]->SOMajouter_arc_entrant(TempArc2[jBoucle]);
+				}
+				for (kBoucle = 0; kBoucle < pGRASommets[iBoucle]->SOMlire_nb_entrant(); kBoucle++) 
+				{
+					pGRASommets[iBoucle]->SOMsupprimer_arc_sortant(TempArc2[jBoucle]->ARClire_destination());
+					pGRASommets[iBoucle]->SOMajouter_arc_sortant(TempArc1[jBoucle]);
+				}
 
-				cout << GRAgraphe.pGRASommets[iBoucle].pSOMSortant[jBoucle]->iARCDestination << endl;
 			}
-			else {
-				cout << "pas d'arc sortant";
-			}
+
 		}
+		//throw exception:: le graphe est vide
+		CGraphe *GrapheInverse = new CGraphe(iGRANb_sommets, pGRASommets);
+		return *GrapheInverse;
+		
 	}
-
-}*/
-//}
