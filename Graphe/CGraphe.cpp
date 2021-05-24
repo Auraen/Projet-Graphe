@@ -193,8 +193,9 @@ int CGraphe::GRAposition_sommet(int iNum_sommet)
 	return iPosSom;
 }
 
-//void CGraphe::GRAafficher_graphe()
+void CGraphe::GRAafficher_graphe()
 {
+	void();
 	/*CGraphe CActions::ACTafficher_graphe(CGraphe GRAgraphe)
 {
 
@@ -218,4 +219,10 @@ int CGraphe::GRAposition_sommet(int iNum_sommet)
 	}
 
 }*/
-//}
+}
+
+CGraphe CGraphe::GRAinverser()
+{
+	CGraphe Test = CGraphe();
+	return Test;
+}

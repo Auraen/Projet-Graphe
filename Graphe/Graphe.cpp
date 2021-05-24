@@ -17,13 +17,36 @@ int main(int argc, char* argv[])
 {
 	if (argc == 2) {
 
-		CGraphe GRAGraphe_extrait = CFichier::FIClire_graphe(argv[1]);
-		cout << "Le graphe extrait du fichier est:" << endl;
-		GRAGraphe_extrait.GRAafficher_graphe;
+		CGraphe GRAGraphe_extrait = CGraphe();
+		CGraphe GRAGraphe_inverse = CGraphe();
+		
+		try
+		{
+			GRAGraphe_extrait = CFichier::FIClire_graphe(argv[1]);
+		}
+		catch (CExceptions EXCexception)
+		{
+			int iCode_Exception = EXCexception.EXClire_code();
 
-		CGraphe GRAGraphe_inverse = GRAGraphe_extrait.GRAinverser;
+			cout << "Erreur lors de la lecture du fichier: " << endl << endl;
+
+			switch (iCode_Exception) {
+			case 1:
+				cout << "ERREUR: Le nombre de sommets et/ou d'arcs n'a pas ete renseigne correctement" << endl << "Veuillez verifier votre fichier" << endl;
+				cout << "Interruption du programme" << endl;
+
+			case 2:
+				cout << "ERREUR: Le fichier n'a pas pu etre ouvert" << endl << "Veuillez verifier le nom et/ou le chemin du fichier saisi" << endl;
+				cout << "Interruption du programme" << endl;
+			}
+		}
+		
+		cout << "Le graphe extrait du fichier est:" << endl;
+		GRAGraphe_extrait.GRAafficher_graphe();
+
+		GRAGraphe_inverse = GRAGraphe_extrait.GRAinverser();
 		cout << endl << endl << "L'inverse de ce graphe est:" << endl;
-		GRAGraphe_inverse.GRAafficher_graphe;
+		GRAGraphe_inverse.GRAafficher_graphe();
 
 		cout << endl << endl << "Fin du programme";
 	}

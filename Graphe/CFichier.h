@@ -11,11 +11,8 @@
 #ifndef C_FICHIER_H
 #define C_FICHIER_H
 
-#define EXCType_Mat 5
-#define EXCFic_nopen 6
-#define EXCNenough_Val 7
-#define EXCToo_much_Val 8
-#define EXCParse 9
+#define EXCFic_nopen 2
+#define EXCParse 1
 
 #include <iostream>
 #include <assert.h>
