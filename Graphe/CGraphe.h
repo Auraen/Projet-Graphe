@@ -107,7 +107,7 @@ public:
 	 * @brief Affiche le graphe.
 	 * @author Youssef
 	 */
-	 void GRAafficher_graphe();
+	void GRAafficher_graphe();
 
 	/**
 	 * @brief Inverse le graphe.

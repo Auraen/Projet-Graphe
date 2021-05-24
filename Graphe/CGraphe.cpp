@@ -222,7 +222,8 @@ int CGraphe::GRAposition_sommet(int iNum_sommet)
 
 	CGraphe CGraphe::GRAinverser() 
 	{
-		
+		CGraphe *GrapheInverse = new CGraphe(iGRANb_sommets, pGRASommets);
+		GrapheInverse->iGRANb_arcs = iGRANb_arcs;
 		int iBoucle = 0;
 		int jBoucle = 0;
 		int kBoucle = 0;
@@ -230,24 +231,23 @@ int CGraphe::GRAposition_sommet(int iNum_sommet)
 		{
 			for (iBoucle = 0; iBoucle < iGRANb_sommets; iBoucle++)
 			{
-				CArc** TempArc1 = pGRASommets[iBoucle]->SOMlire_arc_entrant();
-				CArc** TempArc2 = pGRASommets[iBoucle]->SOMlire_arc_sortant();
-				for (jBoucle = 0; jBoucle < pGRASommets[iBoucle]->SOMlire_nb_entrant(); jBoucle++) 
+				CArc** TempArc1 = GrapheInverse->pGRASommets[iBoucle]->SOMlire_arc_entrant();
+				CArc** TempArc2 = GrapheInverse->pGRASommets[iBoucle]->SOMlire_arc_sortant();
+				for (jBoucle = 0; jBoucle <GrapheInverse-> pGRASommets[iBoucle]->SOMlire_nb_entrant(); jBoucle++) 
 				{
-					pGRASommets[iBoucle]->SOMsupprimer_arc_entrant(TempArc1[jBoucle]->ARClire_destination());
-					pGRASommets[iBoucle]->SOMajouter_arc_entrant(TempArc2[jBoucle]);
+					GrapheInverse->pGRASommets[iBoucle]->SOMsupprimer_arc_entrant(TempArc1[jBoucle]->ARClire_destination());
+					GrapheInverse->pGRASommets[iBoucle]->SOMajouter_arc_entrant(TempArc2[jBoucle]);
 				}
 				for (kBoucle = 0; kBoucle < pGRASommets[iBoucle]->SOMlire_nb_entrant(); kBoucle++) 
 				{
-					pGRASommets[iBoucle]->SOMsupprimer_arc_sortant(TempArc2[jBoucle]->ARClire_destination());
-					pGRASommets[iBoucle]->SOMajouter_arc_sortant(TempArc1[jBoucle]);
+					GrapheInverse->pGRASommets[iBoucle]->SOMsupprimer_arc_sortant(TempArc2[kBoucle]->ARClire_destination());
+					GrapheInverse->pGRASommets[iBoucle]->SOMajouter_arc_sortant(TempArc1[kBoucle]);
 				}
 
 			}
 
 		}
 		//throw exception:: le graphe est vide
-		CGraphe *GrapheInverse = new CGraphe(iGRANb_sommets, pGRASommets);
 		return *GrapheInverse;
 		
 	}
