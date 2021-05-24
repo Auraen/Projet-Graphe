@@ -107,7 +107,7 @@ public:
 	 * @brief Affiche le graphe.
 	 * @author Youssef
 	 */
-	static void GRAafficher_graphe();
+	void GRAafficher_graphe();
 
 	/**
 	 * @brief Inverse le graphe.
@@ -115,6 +115,6 @@ public:
 	 * \return un nouvel objet Cgraphe contenant le graphe inversé
 	 * @author Youssef
 	 */
-	static CGraphe GRAinverser();
+	CGraphe GRAinverser();
 };
 #endif
