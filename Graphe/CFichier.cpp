@@ -41,10 +41,10 @@ void CFichier::FICsupprime_espace(char * pcStr)
  * @param pcNom Nom du fichier dont il faut extraire une matrice
  * @return la matrice extraite du fichier
  */
-CGraphe CFichier::FIClire_graphe(char * pcNom)
+CGraphe* CFichier::FIClire_graphe(char * pcNom)
 {
 	ifstream fichier(pcNom);
-	CGraphe GRAResult;
+	CGraphe* GRAResult = new CGraphe();
 	if (fichier.is_open()) {
 
 		char* cLine = new char[2048];
@@ -90,7 +90,7 @@ CGraphe CFichier::FIClire_graphe(char * pcNom)
 			fichier.getline(cLine, 2048); //Ligne avec le numéro du sommet
 			cBuffer = strtok(cLine, "=");
 			cBuffer = strtok(NULL, "=");
-			GRAResult.GRAajouter_sommet(new CSommet(atoi(cBuffer)));
+			GRAResult->GRAajouter_sommet(new CSommet(atoi(cBuffer)));
 		}
 
 		//Différents arcs
@@ -114,7 +114,7 @@ CGraphe CFichier::FIClire_graphe(char * pcNom)
 			
 			iFin = atoi(cBuffer);
 
-			GRAResult.GRAajouter_arc(iDebut, iFin);
+			GRAResult->GRAajouter_arc(iDebut, iFin);
 		}
 
 		delete[] cLine;

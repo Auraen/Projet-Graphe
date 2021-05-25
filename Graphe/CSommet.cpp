@@ -89,6 +89,35 @@ CSommet::CSommet(int iNumero)
 }
 
 /**
+ * @brief Constructeur de recopie.
+ *
+ * \param SOMdup Sommet à recopier
+ * @author Aurane
+ */
+CSommet::CSommet(CSommet &SOMdup)
+{
+	int iBoucle;
+
+	iSOMNumero = SOMdup.iSOMNumero;
+	iSOMNb_entrant = SOMdup.iSOMNb_entrant;
+	iSOMNb_sortant = SOMdup.iSOMNb_sortant;
+
+	pSOMEntrant = (CArc**)realloc(pSOMEntrant, sizeof(CArc)*iSOMNb_entrant);
+	pSOMSortant = (CArc**)realloc(pSOMSortant, sizeof(CArc)*iSOMNb_sortant);
+
+	
+	for (iBoucle = 0; iBoucle < iSOMNb_entrant; iBoucle++)
+	{
+		pSOMEntrant[iBoucle] = new CArc(*SOMdup.pSOMEntrant[iBoucle]);
+	}
+
+	for (iBoucle = 0; iBoucle < iSOMNb_sortant; iBoucle++)
+	{
+		pSOMSortant[iBoucle] = new CArc(*SOMdup.pSOMSortant[iBoucle]);
+	}
+}
+
+/**
  * @brief Destructeur de la classe CSommet.
  * @author Youssef
  */

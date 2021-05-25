@@ -17,8 +17,8 @@ int main(int argc, char* argv[])
 {
 	if (argc == 2) {
 
-		CGraphe GRAGraphe_extrait = CGraphe();
-		CGraphe GRAGraphe_inverse = CGraphe();
+		CGraphe* GRAGraphe_extrait = new CGraphe();
+		CGraphe* GRAGraphe_inverse = new CGraphe();
 		
 		try
 		{
@@ -34,19 +34,29 @@ int main(int argc, char* argv[])
 			case 1:
 				cout << "ERREUR: Le nombre de sommets et/ou d'arcs n'a pas ete renseigne correctement" << endl << "Veuillez verifier votre fichier" << endl;
 				cout << "Interruption du programme" << endl;
+				return 1;
 
 			case 2:
 				cout << "ERREUR: Le fichier n'a pas pu etre ouvert" << endl << "Veuillez verifier le nom et/ou le chemin du fichier saisi" << endl;
 				cout << "Interruption du programme" << endl;
+				return 1;
+
+			case 3:
+				cout << "ERREUR: Le sommet mentionne n'appartient pas au tableau" << "Veuille verifier son numero de sommet" << endl;
+				cout << "Interruption du programme" << endl;
+				return 1;
+
+			case 4:
+				cout << "ERREUR: Le graphe est vide, impossible de l'inverser" << endl;
 			}
 		}
 		
 		cout << "Le graphe extrait du fichier est:" << endl;
-		GRAGraphe_extrait.GRAafficher_graphe();
+		GRAGraphe_extrait->GRAafficher_graphe();
 
-		GRAGraphe_inverse = GRAGraphe_extrait.GRAinverser();
+		GRAGraphe_inverse = GRAGraphe_extrait->GRAinverser();
 		cout << endl << endl << "L'inverse de ce graphe est:" << endl;
-		GRAGraphe_inverse.GRAafficher_graphe();
+		GRAGraphe_inverse->GRAafficher_graphe();
 
 		cout << endl << endl << "Fin du programme";
 	}

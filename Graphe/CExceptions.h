@@ -9,7 +9,7 @@
 #ifndef C_EXCEPTIONS_H
 #define C_EXCEPTIONS_H
 
-#include <iostream>s
+#include <iostream>
 
 class CExceptions
 {

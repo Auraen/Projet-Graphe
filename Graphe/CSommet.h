@@ -33,6 +33,14 @@ public:
 	CSommet(int iNumero);
 
 	/**
+	 * @brief Constructeur de recopie.
+	 * 
+	 * \param SOMdup Sommet à recopier
+	 * @author Aurane
+	 */
+	CSommet(CSommet &SOMdup);
+
+	/**
 	 * @brief Destructeur de la classe CSommet.
 	 * @author Youssef
 	 */
@@ -118,4 +126,5 @@ public:
 	 */
 	void SOMsupprimer_arc_sortant(int iDestination);
 };
+
 #endif

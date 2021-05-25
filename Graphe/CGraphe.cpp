@@ -41,11 +41,13 @@ CGraphe::CGraphe(int iNbSommets, CSommet** pSommet) {
  * @author Youssef
  */
 CGraphe::~CGraphe() {
+
 	int iBoucle;
 	for (iBoucle = 0; iBoucle < iGRANb_sommets; iBoucle++)
 		delete pGRASommets[iBoucle];
 
 	free(pGRASommets);
+
 }
 
 /**
@@ -186,11 +188,73 @@ int CGraphe::GRAposition_sommet(int iNum_sommet)
 	}
 	
 	if (iPosSom == -1) {
-		void();
-		//throw exception: le num de sommet n'appartient pas au tab
+		throw CExceptions(EXCNumTab);
 	}
 
 	return iPosSom;
 }
 
+void CGraphe::GRAafficher_graphe()const
+{
+	int iBoucleSommet;
+	int iBoucleArc;
 
+	cout << "Il y a " << iGRANb_sommets << " sommets" << endl;
+	//Affichage de chaque sommet
+	for (iBoucleSommet = 0; iBoucleSommet < iGRANb_sommets; iBoucleSommet++)
+	{
+		int iNumSommet = pGRASommets[iBoucleSommet]->SOMlire_numero_sommet();
+		int iNbsortant = pGRASommets[iBoucleSommet]->SOMlire_nb_sortant();
+		cout << "Sommet Numero " << iNumSommet << endl;
+		cout << "Ce sommet contient " << iNbsortant << " arcs aux destinations suivantes:" << endl;
+
+		//Affichage de chaque sommet sortant
+		CArc** ARCSortant = pGRASommets[iBoucleSommet]->SOMlire_arc_sortant();
+		for (iBoucleArc = 0; iBoucleArc < iNbsortant; iBoucleArc++) {
+			cout << iNumSommet << " --> " << ARCSortant[iBoucleArc]->ARClire_destination() << endl;
+		}
+	}
+}
+
+/**
+ * @brief Inverse un graphe.
+ * 
+ * \return un nouveau graphe, l'inverse du premier
+ */
+CGraphe* CGraphe::GRAinverser() const
+{
+	int iSommet = 0;
+	int iArc = 0;
+	CGraphe* GRAResult = new CGraphe();
+
+	if (iGRANb_sommets > 0)
+	{
+		for (iSommet = 0; iSommet < iGRANb_sommets; iSommet++)
+		{
+			int iEntrant = pGRASommets[iSommet]->SOMlire_nb_entrant();
+			int iSortant = pGRASommets[iSommet]->SOMlire_nb_sortant();
+			CArc** ARCEntrant = pGRASommets[iSommet]->SOMlire_arc_entrant();
+			CArc** ARCSortant = pGRASommets[iSommet]->SOMlire_arc_sortant();			
+
+			//Ajoute le sommet au graph inverse
+			int iNumero = pGRASommets[iSommet]->SOMlire_numero_sommet();
+			GRAResult->GRAajouter_sommet(new CSommet(iNumero));
+
+			//Ajoute les arcs dans le graph inverse
+			for (iArc = 0; iArc < iSortant; iArc++) {
+				GRAResult->pGRASommets[iSommet]->SOMajouter_arc_entrant(ARCSortant[iArc]);
+			}
+
+			for (iArc = 0; iArc < iEntrant; iArc++) {
+				GRAResult->pGRASommets[iSommet]->SOMajouter_arc_sortant(ARCEntrant[iArc]);
+			}
+		}
+	}
+	else
+	{
+		throw CExceptions(EXCGrapheVide);
+	}
+
+	return GRAResult;
+
+}

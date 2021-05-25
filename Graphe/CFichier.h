@@ -43,7 +43,7 @@ public:
 	 * @param pcNom Nom du fichier dont il faut extraire une matrice
 	 * @return la matrice extraite du fichier
 	 */
-	static CGraphe FIClire_graphe(char* pcNom);
+	static CGraphe* FIClire_graphe(char* pcNom);
 };
 
 #endif

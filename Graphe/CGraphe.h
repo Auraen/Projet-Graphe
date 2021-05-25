@@ -14,6 +14,9 @@
 #include <assert.h>
 #include "CSommet.h"
 
+#define EXCNumTab 3 
+#define EXCGrapheVide 4 
+
 class CGraphe
 {
 private:
@@ -107,7 +110,7 @@ public:
 	 * @brief Affiche le graphe.
 	 * @author Youssef
 	 */
-	void GRAafficher_graphe();
+	void GRAafficher_graphe()const;
 
 	/**
 	 * @brief Inverse le graphe.
@@ -115,6 +118,15 @@ public:
 	 * \return un nouvel objet Cgraphe contenant le graphe inversé
 	 * @author Youssef
 	 */
-	CGraphe GRAinverser();
+	CGraphe* GRAinverser()const;
+
+	/**
+	 * @brief Surcharge de l'operateur =.
+	 *
+	 * @param GRAdup Matrice a laquelle la matrice appelante doit etre egale
+	 * @return La matrice appelante modifiee
+	 * @author Aurane
+	 */
+	//CGraphe & operator=(CGraphe& GRAdup);
 };
 #endif
