@@ -13,7 +13,7 @@ int CSommet::iSOMincremente_numero = 0;
 int* CSommet::piSOMstocke_numero = NULL;
 
 /**
- * @brief Constructeur par défaut.
+ * @brief Constructeur par defaut.
  * @author Aurane
  */
 CSommet::CSommet()
@@ -36,13 +36,14 @@ CSommet::CSommet()
 	iSOMNb_entrant = 0;
 	iSOMNb_sortant = 0;
 
-	pSOMEntrant = (CArc**)realloc(pSOMEntrant, sizeof(CArc)*iSOMNb_entrant);
-	pSOMSortant = (CArc**)realloc(pSOMSortant, sizeof(CArc)*iSOMNb_sortant);
+
+	pSOMEntrant = (CArc**)realloc(pSOMEntrant, sizeof(CArc**)*iSOMNb_entrant);
+	pSOMSortant = (CArc**)realloc(pSOMSortant, sizeof(CArc**)*iSOMNb_sortant);
 }
 
 /**
  * @brief Constructeur de confort.
- * 
+ *
  * \param iNumero Numero a attribuer au sommet cree
  * @author Aurane
  */
@@ -56,42 +57,43 @@ CSommet::CSommet(int iNumero)
 	else
 	{
 		iSize = 0;
-		CSommet::piSOMstocke_numero = (int*)realloc(CSommet::piSOMstocke_numero, iSize + 1);
+		CSommet::piSOMstocke_numero = (int*)realloc(CSommet::piSOMstocke_numero, (iSize + 1) * sizeof(int*));
 	}
 
 	//Verifie que le numero n'est pas deja attribue a un sommet
-	if (iNumero < iSize-1) {							//Si le num a deja ete donne automatiquement
+	if (iNumero < iSize - 1) {							//Si le num a deja ete donne automatiquement
 		void();
 		//throw CException truc
 	}
-	for (iBoucle = 0 ; iBoucle < iSize ; iBoucle++) {	//Si le num a deja ete donne par l'utilisateur
+	for (iBoucle = 0; iBoucle < iSize; iBoucle++) {	//Si le num a deja ete donne par l'utilisateur
 		if (CSommet::piSOMstocke_numero[iBoucle] == iNumero)
 			void();
-			//throw CException truc
+		//throw CException truc
 	}
 
 	iSOMNumero = iNumero;
 	iSize++;
 	//Stocke le numero donne par l'utilisateur
 	if (iSize == 1) {
+		CSommet::piSOMstocke_numero = (int*)realloc(CSommet::piSOMstocke_numero, iSize * sizeof(int*));
 		CSommet::piSOMstocke_numero[0] = iNumero;
 	}
 	else {
-		CSommet::piSOMstocke_numero = (int*) realloc(CSommet::piSOMstocke_numero, iSize);
-		CSommet::piSOMstocke_numero[iSize-1] = iNumero;
+		CSommet::piSOMstocke_numero = (int*)realloc(CSommet::piSOMstocke_numero, iSize * sizeof(int*));
+		CSommet::piSOMstocke_numero[iSize - 1] = iNumero;
 	}
 
 	iSOMNb_entrant = 0;
 	iSOMNb_sortant = 0;
 
-	pSOMEntrant = (CArc**)realloc(pSOMEntrant, sizeof(CArc)*iSOMNb_entrant);
-	pSOMSortant = (CArc**)realloc(pSOMSortant, sizeof(CArc)*iSOMNb_sortant);
+	pSOMEntrant = nullptr;
+	pSOMSortant = nullptr;
 }
 
 /**
  * @brief Constructeur de recopie.
  *
- * \param SOMdup Sommet à recopier
+ * \param SOMdup Sommet a recopier
  * @author Aurane
  */
 CSommet::CSommet(CSommet &SOMdup)
@@ -99,13 +101,26 @@ CSommet::CSommet(CSommet &SOMdup)
 	int iBoucle;
 
 	iSOMNumero = SOMdup.iSOMNumero;
+
+	if (iSOMNb_entrant < SOMdup.iSOMNb_entrant) {
+		for (iBoucle = iSOMNb_entrant; iBoucle < SOMdup.iSOMNb_entrant; iBoucle++) {
+			delete pSOMEntrant[iBoucle];
+		}
+	}
+
+	if (iSOMNb_sortant < SOMdup.iSOMNb_sortant) {
+		for (iBoucle = iSOMNb_sortant; iBoucle < SOMdup.iSOMNb_sortant; iBoucle++) {
+			delete pSOMSortant[iBoucle];
+		}
+	}
+
 	iSOMNb_entrant = SOMdup.iSOMNb_entrant;
 	iSOMNb_sortant = SOMdup.iSOMNb_sortant;
 
-	pSOMEntrant = (CArc**)realloc(pSOMEntrant, sizeof(CArc)*iSOMNb_entrant);
-	pSOMSortant = (CArc**)realloc(pSOMSortant, sizeof(CArc)*iSOMNb_sortant);
+	pSOMEntrant = (CArc**)realloc(pSOMEntrant, sizeof(CArc**)*iSOMNb_entrant);
+	pSOMSortant = (CArc**)realloc(pSOMSortant, sizeof(CArc**)*iSOMNb_sortant);
 
-	
+
 	for (iBoucle = 0; iBoucle < iSOMNb_entrant; iBoucle++)
 	{
 		pSOMEntrant[iBoucle] = new CArc(*SOMdup.pSOMEntrant[iBoucle]);
@@ -125,23 +140,28 @@ CSommet::~CSommet()
 {
 	int iBoucle;
 
-	for (iBoucle = 0; iBoucle < iSOMNb_entrant; iBoucle++)
-	{
-		delete pSOMEntrant[iBoucle];
+	if (pSOMEntrant != nullptr) {
+		for (iBoucle = 0; iBoucle < iSOMNb_entrant; iBoucle++)
+		{
+			delete pSOMEntrant[iBoucle];
+		}
+		free(pSOMEntrant);
+		pSOMEntrant = nullptr;
 	}
 
-	for (iBoucle = 0; iBoucle < iSOMNb_sortant; iBoucle++)
-	{
-		delete pSOMSortant[iBoucle];
+	if (pSOMSortant != nullptr) {
+		for (iBoucle = 0; iBoucle < iSOMNb_sortant; iBoucle++)
+		{
+			delete pSOMSortant[iBoucle];
+		}
+		free(pSOMSortant);
+		pSOMSortant = nullptr;
 	}
-
-	free(pSOMEntrant);
-	free(pSOMSortant);
 }
 
 /**
  * @brief Getter du numero de sommet
- * 
+ *
  * \return numero du sommet concerne
  * @author Aurane
  */
@@ -152,7 +172,7 @@ int CSommet::SOMlire_numero_sommet()
 
 /**
  * @brief Setter du numero de sommet.
- * 
+ *
  * \param iNumero numero a affecter au sommet
  * @author Aurane
  */
@@ -184,7 +204,7 @@ void CSommet::SOMmodifier_numero_sommet(int iNumero)
 
 /**
  * @brief Getter nombre d'arcs entrants.
- * 
+ *
  * \return nombre d'arcs entrants dans le sommet
  * @author Aurane
  */
@@ -206,7 +226,7 @@ int CSommet::SOMlire_nb_sortant()
 
 /**
  * @brief Getter des arcs entrants
- * 
+ *
  * \return le tableau contenant les arcs entrants
  * @author Aurane
  */
@@ -217,16 +237,16 @@ CArc** CSommet::SOMlire_arc_entrant()
 
 /**
  * @brief Ajoute un arc entrant au sommet.
- * 
+ *
  * \param ARCarc Arc a ajouter
  * @author Aurane
  */
 void CSommet::SOMajouter_arc_entrant(CArc* ARCarc)
 {
 	iSOMNb_entrant++;
-	pSOMEntrant = (CArc**)realloc(pSOMEntrant, sizeof(CArc)*iSOMNb_entrant);
+	pSOMEntrant = (CArc**)realloc(pSOMEntrant, sizeof(CArc**)*iSOMNb_entrant);
 
-	pSOMEntrant[iSOMNb_entrant-1] = ARCarc;
+	pSOMEntrant[iSOMNb_entrant - 1] = ARCarc;
 }
 
 /**
@@ -249,14 +269,14 @@ CArc** CSommet::SOMlire_arc_sortant()
 void CSommet::SOMajouter_arc_sortant(CArc* ARCarc)
 {
 	iSOMNb_sortant++;
-	pSOMSortant = (CArc**)realloc(pSOMSortant, sizeof(CArc)*iSOMNb_sortant);
+	pSOMSortant = (CArc**)realloc(pSOMSortant, sizeof(CArc**)*iSOMNb_sortant);
 
-	pSOMSortant[iSOMNb_sortant-1] = ARCarc;
+	pSOMSortant[iSOMNb_sortant - 1] = ARCarc;
 }
 
 /**
  * @brief Supprime un arc entrant specifique.
- * 
+ *
  * \param iDestination Destination de l'arc a supprimer
  * @author Aurane
  */
@@ -283,11 +303,15 @@ void CSommet::SOMsupprimer_arc_entrant(int iDestination)
 	for (iBoucle = iPos; iBoucle < iSOMNb_entrant; iBoucle++) {
 		pSOMEntrant[iBoucle] = pSOMEntrant[iBoucle + 1];
 	}
-	
+
 	if (iSOMNb_entrant == 0) {
-		free(pSOMEntrant);
-	}else
-		pSOMEntrant = (CArc**)realloc(pSOMEntrant, sizeof(CArc*)*iSOMNb_entrant);
+		if (pSOMEntrant != nullptr) {
+			free(pSOMEntrant);
+			pSOMEntrant = nullptr;
+		}
+	}
+	else
+		pSOMEntrant = (CArc**)realloc(pSOMEntrant, sizeof(CArc**)*iSOMNb_entrant);
 }
 
 /**
@@ -321,9 +345,12 @@ void CSommet::SOMsupprimer_arc_sortant(int iDestination)
 	}
 
 	if (iSOMNb_sortant == 0) {
-		free(pSOMSortant);
+		if (pSOMSortant != nullptr) {
+			free(pSOMSortant);
+			pSOMSortant = nullptr;
+		}
 	}
 	else
-		pSOMSortant = (CArc**)realloc(pSOMSortant, sizeof(CArc*)*iSOMNb_sortant);
+		pSOMSortant = (CArc**)realloc(pSOMSortant, sizeof(CArc**)*iSOMNb_sortant);
 }
 

@@ -46,7 +46,7 @@ CGraphe* CFichier::FIClire_graphe(char * pcNom)
 	ifstream fichier(pcNom);
 	CGraphe* GRAResult = new CGraphe();
 	if (fichier.is_open()) {
-
+		
 		char* cLine = new char[2048];
 
 		//Nb de Sommets
@@ -76,7 +76,7 @@ CGraphe* CFichier::FIClire_graphe(char * pcNom)
 			throw CExceptions(EXCParse);
 		}
 		int iNbArcs = atoi(cBuffer);
-
+		
 		//Numéro du sommet
 		do
 		{
@@ -85,14 +85,13 @@ CGraphe* CFichier::FIClire_graphe(char * pcNom)
 		} while (cLine[0] == '\n' || cLine[0] == '\r' || cLine[0] == '\0');
 
 		int iBoucle;
-
 		for (iBoucle = 0; iBoucle < iNbSommets; iBoucle++) {
 			fichier.getline(cLine, 2048); //Ligne avec le numéro du sommet
 			cBuffer = strtok(cLine, "=");
 			cBuffer = strtok(NULL, "=");
 			GRAResult->GRAajouter_sommet(new CSommet(atoi(cBuffer)));
 		}
-
+		
 		//Différents arcs
 		do
 		{

@@ -2,17 +2,17 @@
  * \file   CGraphe.cpp
  * \brief  Ce fichier contient la definition des methodes de la classe
  * CGraphe.
- * 
+ *
  * \author Indique dans les commentaires de chaque methode
  * \date   May 2021
  *********************************************************************/
 #include "CGraphe.h"
 
-/**
- * @brief Constructeur par defaut
- * @return un objet CGraphe
- * @author Aurane
- */
+ /**
+  * @brief Constructeur par defaut
+  * @return un objet CGraphe
+  * @author Aurane
+  */
 CGraphe::CGraphe() {
 	iGRANb_sommets = 0;
 	pGRASommets = NULL;
@@ -21,15 +21,17 @@ CGraphe::CGraphe() {
 
 /**
  * @brief Constructeur de confort: permet de creer un graphe avec un certain nombre de sommets
- * 
+ *
  * \param iNbSommets nombre de sommets du graphe
  * \param pSommet Tableau contenant les sommets du graphe
  * @author Aurane
  */
 CGraphe::CGraphe(int iNbSommets, CSommet** pSommet) {
 	int iBoucle;
+
 	iGRANb_sommets = iNbSommets;
-	pGRASommets = (CSommet**)realloc(pGRASommets, sizeof(CSommet)*iGRANb_sommets);
+
+	pGRASommets = (CSommet**)realloc(pGRASommets, sizeof(CSommet**)*iGRANb_sommets);
 
 	for (iBoucle = 0; iBoucle < iGRANb_sommets; iBoucle++) {
 		pGRASommets[iBoucle] = new CSommet(*pSommet[iBoucle]);
@@ -42,23 +44,25 @@ CGraphe::CGraphe(int iNbSommets, CSommet** pSommet) {
  */
 CGraphe::~CGraphe() {
 
-	int iBoucle;
-	for (iBoucle = 0; iBoucle < iGRANb_sommets; iBoucle++)
-		delete pGRASommets[iBoucle];
+	if (pGRASommets != nullptr) {
+		int iBoucle;
+		for (iBoucle = 0; iBoucle < iGRANb_sommets; iBoucle++)
+			delete pGRASommets[iBoucle];
 
-	free(pGRASommets);
-
+		free(pGRASommets);
+		pGRASommets = nullptr;
+	}
 }
 
 /**
  * @brief Ajoute un sommet au graphe
- * 
+ *
  * \param pSommet Sommet a ajouter
  * @author Aurane
  */
 void CGraphe::GRAajouter_sommet(CSommet* pSommet)
 {
-	pGRASommets = (CSommet**)realloc(pGRASommets, sizeof(CSommet*)*(iGRANb_sommets+1));
+	pGRASommets = (CSommet**)realloc(pGRASommets, sizeof(CSommet**)*(iGRANb_sommets + 1));
 
 	pGRASommets[iGRANb_sommets] = pSommet;
 	iGRANb_sommets++;
@@ -66,7 +70,7 @@ void CGraphe::GRAajouter_sommet(CSommet* pSommet)
 
 /**
  * @brief Supprime un sommet du graphe, designe par son numero
- * 
+ *
  * \param iNumSommet numero du sommet a supprimer
  * @author Aurane
  */
@@ -87,7 +91,7 @@ void CGraphe::GRAsupprimer_sommet(int iNumSommet)
 		pGRASommets[dest]->SOMsupprimer_arc_sortant(iNumSommet);	//On supprime l'arc dans l'autre sommet
 		pGRASommets[iPos]->SOMsupprimer_arc_entrant(dest);			//On supprime l'arc dans le sommet à suppr
 	}
-	
+
 	//Suppression des arcs sortants du sommet
 	for (iBoucle = 0; iBoucle < iNbSortant; iBoucle++) {
 		dest = ARCSortant[iBoucle]->ARClire_destination();
@@ -95,16 +99,16 @@ void CGraphe::GRAsupprimer_sommet(int iNumSommet)
 		pGRASommets[iPos]->SOMsupprimer_arc_sortant(dest);			//On supprime l'arc dans le sommet à suppr
 	}
 
-	for (iBoucle = iPos; iBoucle < iGRANb_sommets-1; iBoucle++) {
+	for (iBoucle = iPos; iBoucle < iGRANb_sommets - 1; iBoucle++) {
 		pGRASommets[iBoucle] = pGRASommets[iBoucle + 1];
 	}
 
 	iGRANb_sommets--;
 
-	pGRASommets = (CSommet**)realloc(pGRASommets, sizeof(CSommet)*iGRANb_sommets);
+	pGRASommets = (CSommet**)realloc(pGRASommets, sizeof(CSommet**)*iGRANb_sommets);
 
 	/*Code Youssef
-	
+
 	int iNombreArcs = SOMsommet.iSOMNb_entrant + SOMsommet.iSOMNb_sortant;
 	iGRANb_arcs = iGRANb_arcs - iNombreArcs;
 	iGRANb_sommets = iGRANb_sommets - 1;
@@ -114,7 +118,7 @@ void CGraphe::GRAsupprimer_sommet(int iNumSommet)
 
 /**
  * @brief Getter pour le nombre de sommets du graphe.
- * 
+ *
  * \return un entier, le nombre de sommets du graphe
  * @author Aurane
  */
@@ -125,7 +129,7 @@ int CGraphe::GRAlire_nb_sommet()
 
 /**
  * @brief Ajoute un arc entre deux sommets.
- * 
+ *
  * \param iSommet_depart le numero du sommet duquel doit partir l'arc
  * \param iSommet_arrivee le numero du sommet auquel doit aller l'arc
  * @author Aurane
@@ -141,7 +145,7 @@ void CGraphe::GRAajouter_arc(int iSommet_depart, int iSommet_arrivee)
 
 /**
  * @brief Supprime un arc entre deux sommets.
- * 
+ *
  * \param iDepart le numero du sommet de depart de l'arc
  * \param iArrivee le numero du sommet d'arrivee de l'arc
  * @author Aurane
@@ -159,7 +163,7 @@ void CGraphe::GRAsupprimer_arc(int iDepart, int iArrivee)
 
 /**
  * @brief Getter du nombre d'arcs du graphe.
- * 
+ *
  * \return un entier, le nombre d'arcs du graphe
  * @author Aurane
  */
@@ -170,7 +174,7 @@ int CGraphe::GRAlire_nb_arcs()
 
 /**
  * @brief Donne la position d'un sommet specifique dans le tableau de sommets.
- * 
+ *
  * \param iNum_sommet le numero du sommet a rechercher
  * \return la position du sommet dans pGRASommets
  * @author Aurane
@@ -186,7 +190,7 @@ int CGraphe::GRAposition_sommet(int iNum_sommet)
 			iPosSom = iBoucle;
 		iBoucle++;
 	}
-	
+
 	if (iPosSom == -1) {
 		throw CExceptions(EXCNumTab);
 	}
@@ -217,9 +221,10 @@ void CGraphe::GRAafficher_graphe()const
 }
 
 /**
- * @brief Inverse un graphe.
- * 
+ * @brief Inverse le graphe.
+ *
  * \return un nouveau graphe, l'inverse du premier
+ * @author Aurane
  */
 CGraphe* CGraphe::GRAinverser() const
 {
@@ -234,7 +239,7 @@ CGraphe* CGraphe::GRAinverser() const
 			int iEntrant = pGRASommets[iSommet]->SOMlire_nb_entrant();
 			int iSortant = pGRASommets[iSommet]->SOMlire_nb_sortant();
 			CArc** ARCEntrant = pGRASommets[iSommet]->SOMlire_arc_entrant();
-			CArc** ARCSortant = pGRASommets[iSommet]->SOMlire_arc_sortant();			
+			CArc** ARCSortant = pGRASommets[iSommet]->SOMlire_arc_sortant();
 
 			//Ajoute le sommet au graph inverse
 			int iNumero = pGRASommets[iSommet]->SOMlire_numero_sommet();
