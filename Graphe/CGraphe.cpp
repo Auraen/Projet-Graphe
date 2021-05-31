@@ -198,6 +198,10 @@ int CGraphe::GRAposition_sommet(int iNum_sommet)
 	return iPosSom;
 }
 
+/**
+ * @brief Affiche le graphe.
+ * @author Youssef
+ */
 void CGraphe::GRAafficher_graphe()const
 {
 	int iBoucleSommet;

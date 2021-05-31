@@ -116,17 +116,8 @@ public:
 	 * @brief Inverse le graphe.
 	 * 
 	 * \return un nouvel objet Cgraphe contenant le graphe inversé
-	 * @author Youssef
-	 */
-	CGraphe* GRAinverser()const;
-
-	/**
-	 * @brief Surcharge de l'operateur =.
-	 *
-	 * @param GRAdup Matrice a laquelle la matrice appelante doit etre egale
-	 * @return La matrice appelante modifiee
 	 * @author Aurane
 	 */
-	//CGraphe & operator=(CGraphe& GRAdup);
+	CGraphe* GRAinverser()const;
 };
 #endif

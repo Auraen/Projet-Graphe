@@ -46,17 +46,31 @@ int main(int argc, char* argv[])
 				cout << "Interruption du programme" << endl;
 				return 1;
 
-			case 4:
-				cout << "ERREUR: Le graphe est vide, impossible de l'inverser" << endl;
 			}
 		}
 		
 		cout << "Le graphe extrait du fichier est:" << endl;
 		GRAGraphe_extrait->GRAafficher_graphe();
 
-		GRAGraphe_inverse = GRAGraphe_extrait->GRAinverser();
-		cout << endl << endl << "L'inverse de ce graphe est:" << endl;
-		GRAGraphe_inverse->GRAafficher_graphe();
+		try {
+			GRAGraphe_inverse = GRAGraphe_extrait->GRAinverser();
+			cout << endl << endl << "L'inverse de ce graphe est:" << endl;
+			GRAGraphe_inverse->GRAafficher_graphe();
+		}
+		catch (CExceptions EXCexception)
+		{
+			int iCode_Exception = EXCexception.EXClire_code();
+
+			cout << "Erreur lors de l'inversion du graphe: " << endl << endl;
+
+			switch (iCode_Exception) {
+			case 4:
+				cout << "ERREUR: Le graphe est vide, impossible de l'inverser" << endl;
+				break;
+			}
+		}
+
+		
 
 		cout << endl << endl << "Fin du programme";
 	}
