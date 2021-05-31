@@ -7,6 +7,7 @@
 CArc::CArc()
 {
 	iARCDestination = 0;
+	iARCPoids = 1;
 }
 
 /**
@@ -15,9 +16,10 @@ CArc::CArc()
  * \param iDestination Destination de l'arc a créer
  * @author Youssef
  */
-CArc::CArc(int iDestination)
+CArc::CArc(int iDestination, int iPoids)
 {
 	iARCDestination = iDestination;
+	iARCPoids = iPoids;
 }
 
 /**
@@ -38,5 +40,10 @@ CArc::~CArc()
 int CArc::ARClire_destination()
 {
 	return iARCDestination;
+}
+
+int CArc::ARClire_poids()
+{
+	return iARCPoids;
 }
 

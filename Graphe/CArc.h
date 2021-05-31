@@ -12,6 +12,7 @@ class CArc
 {
 private:
 	int iARCDestination;
+	int iARCPoids;
 
 public:
 
@@ -27,7 +28,7 @@ public:
 	 * \param iDestination Destination de l'arc a créer
 	 * @author Youssef
 	 */
-	CArc(int iDestination);
+	CArc(int iDestination, int iPoids);
 
 	/**
 	 * @brief Destructeur de la classe CArc.
@@ -42,5 +43,13 @@ public:
 	 * @author Youssef
 	 */
 	int ARClire_destination();
+
+	/**
+	* @brief Getter du poids de l'arc.
+	 *
+	 * \return poids de l'arc
+	 * @author Aurane
+	 */
+	int ARClire_poids();
 };
 #endif
