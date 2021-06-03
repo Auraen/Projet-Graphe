@@ -15,7 +15,7 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-	if (argc == 2) {
+	/*if (argc == 2) {
 
 		CGraphe* GRAGraphe_extrait = new CGraphe();
 		CGraphe* GRAGraphe_inverse = new CGraphe();
@@ -77,5 +77,41 @@ int main(int argc, char* argv[])
 	else {
 		cout << "Veuillez donner le nom d'un seul fichier en parametre lors de l'appel du programme" << endl;
 		return 1;
+	}*/
+
+	CGraphe* GRAResult = new CGraphe();
+	int iBoucle;
+
+	for (iBoucle = 1; iBoucle <= 8; iBoucle++) {
+		GRAResult->GRAajouter_sommet(new CSommet(iBoucle));
 	}
+
+	GRAResult->GRAajouter_arc(1,2);
+	GRAResult->GRAajouter_arc(1,3);
+	GRAResult->GRAajouter_arc(1,4);
+	GRAResult->GRAmodifierPoids(1, 2, 2);
+	GRAResult->GRAmodifierPoids(1, 3, 2);
+	GRAResult->GRAmodifierPoids(1, 4, 3);
+
+	GRAResult->GRAajouter_arc(2, 5);
+	GRAResult->GRAmodifierPoids(2, 5, 4);
+
+	GRAResult->GRAajouter_arc(3, 6);
+	GRAResult->GRAajouter_arc(3, 7);
+	GRAResult->GRAmodifierPoids(3, 6, 2);
+
+	GRAResult->GRAajouter_arc(4, 7);
+
+	GRAResult->GRAajouter_arc(5, 6);
+	GRAResult->GRAajouter_arc(5, 8);
+	GRAResult->GRAmodifierPoids(5, 8, 2);
+
+	GRAResult->GRAajouter_arc(6, 8);
+
+	GRAResult->GRAajouter_arc(7, 8);
+	GRAResult->GRAmodifierPoids(7, 8, 3);
+
+	//GRAResult->GRAafficher_graphe();
+
+	GRAResult->GRAAfficherBellmanFord(GRAResult->GRABellmanFord(1));
 }

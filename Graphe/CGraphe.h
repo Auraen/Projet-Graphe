@@ -16,6 +16,7 @@
 
 #define EXCNumTab 3 
 #define EXCGrapheVide 4 
+#define CheminMax 1024
 
 class CGraphe
 {
@@ -23,6 +24,11 @@ private:
 	CSommet** pGRASommets;
 	int iGRANb_sommets;
 	int iGRANb_arcs;
+	typedef struct BellmanFord {
+		bool chemin;
+		int* Ds;
+		int iSommetDepart;
+	}BellmanFord;
 
 public:
 	/**
@@ -119,5 +125,19 @@ public:
 	 * @author Aurane
 	 */
 	CGraphe* GRAinverser()const;
+
+	/**
+	 * @brief Modifie le poids d'un arc.
+	 * 
+	 * \param iDepart sommet de depart de l'arc
+	 * \param iArrivee sommet d'arrivee de l'arc
+	 * \param iNewPoids nouveau poids de l'arc
+	 * @author Aurane
+	 */
+	void GRAmodifierPoids(int iDepart, int iArrivee, int iNewPoids);
+
+
+	BellmanFord GRABellmanFord(int iDepart);
+	void GRAAfficherBellmanFord(BellmanFord val);
 };
 #endif

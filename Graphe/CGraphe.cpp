@@ -219,7 +219,7 @@ void CGraphe::GRAafficher_graphe()const
 		//Affichage de chaque sommet sortant
 		CArc** ARCSortant = pGRASommets[iBoucleSommet]->SOMlire_arc_sortant();
 		for (iBoucleArc = 0; iBoucleArc < iNbsortant; iBoucleArc++) {
-			cout << iNumSommet << " --> " << ARCSortant[iBoucleArc]->ARClire_destination() << endl;
+			cout << iNumSommet << " --> " << ARCSortant[iBoucleArc]->ARClire_destination() << " de poids "<< ARCSortant[iBoucleArc]->ARClire_poids() << endl;
 		}
 	}
 }
@@ -266,4 +266,146 @@ CGraphe* CGraphe::GRAinverser() const
 
 	return GRAResult;
 
+}
+
+/**
+ * @brief Modifie le poids d'un arc.
+ *
+ * \param iDepart sommet de depart de l'arc
+ * \param iArrivee sommet d'arrivee de l'arc
+ * \param iNewPoids nouveau poids de l'arc
+ * @author Aurane
+ */
+void CGraphe::GRAmodifierPoids(int iDepart, int iArrivee, int iNewPoids)
+{
+	int iposDepart = GRAposition_sommet(iDepart);
+	int iposFin = GRAposition_sommet(iArrivee);
+
+	int iNbsommet = pGRASommets[iposDepart]->SOMlire_nb_sortant();
+	int iNbSortant = pGRASommets[iposDepart]->SOMlire_nb_sortant();
+	CArc** ARCtabSortant = pGRASommets[iposDepart]->SOMlire_arc_sortant();
+
+	int iBoucle = 0;
+	int iPos = -1;
+
+	while (iPos == -1 && iBoucle < iNbSortant) {
+		if (iArrivee == ARCtabSortant[iBoucle]->ARClire_destination())
+			iPos = iBoucle;
+		iBoucle++;
+	}
+
+	if (iPos == -1) {
+		void();
+		//Throw cexception il n'existe pas d'arc ayant cette destination
+	}
+	
+	ARCtabSortant[iPos]->ARCmodifier_poids(iNewPoids);
+}
+
+CGraphe::BellmanFord CGraphe::GRABellmanFord(int iDepart)
+{
+	int iNbSommets = iGRANb_sommets;
+	BellmanFord Result;
+	Result.iSommetDepart = iDepart;
+	int* P = new int[iNbSommets];
+	Result.Ds = new int[iNbSommets];
+
+	int iBoucleSommets;
+	int iBoucleSommets2;
+	int iBoucleArc;
+	bool PoidsInchangé = false;
+	int longueur;
+
+	for (iBoucleSommets = 0; iBoucleSommets < iNbSommets; iBoucleSommets++) {
+		P[iBoucleSommets] = -1;
+		Result.Ds[iBoucleSommets] = CheminMax;
+	}
+
+	int iPosDepart = GRAposition_sommet(iDepart);
+	Result.Ds[iPosDepart] = 0;
+	P[iPosDepart] = 0;
+
+	for (iBoucleSommets = 1; iBoucleSommets < iNbSommets - 1 && !PoidsInchangé; iBoucleSommets++) {
+		PoidsInchangé = true;
+		for (iBoucleSommets2 = 0; iBoucleSommets2 < iNbSommets; iBoucleSommets2++) {
+			if (P[iBoucleSommets2] == iBoucleSommets - 1) {
+				int nbSortant = pGRASommets[iBoucleSommets2]->SOMlire_nb_sortant();
+				CArc** ARCSortant = pGRASommets[iBoucleSommets2]->SOMlire_arc_sortant();
+
+				for (iBoucleArc = 0; iBoucleArc < nbSortant; iBoucleArc++) {
+					longueur = Result.Ds[iBoucleSommets2] + ARCSortant[iBoucleArc]->ARClire_poids();
+
+					int iPosDest = GRAposition_sommet(ARCSortant[iBoucleArc]->ARClire_destination());
+
+					if (longueur < Result.Ds[iPosDest]) {
+						Result.Ds[iPosDest] = longueur;
+						P[iPosDest] = iBoucleSommets;
+						PoidsInchangé = false;
+					}
+				}
+			}
+		}
+
+		//Verifier pour le cycle absorbant
+		for (iBoucleSommets2 = 0; iBoucleSommets2 < iNbSommets; iBoucleSommets2++) {
+
+				int nbSortant = pGRASommets[iBoucleSommets2]->SOMlire_nb_sortant();
+				CArc** ARCSortant = pGRASommets[iBoucleSommets2]->SOMlire_arc_sortant();
+
+
+				for (iBoucleArc = 0; iBoucleArc < nbSortant; iBoucleArc++) {
+					int iPosDest = GRAposition_sommet(ARCSortant[iBoucleArc]->ARClire_destination());
+
+					if (Result.Ds[iPosDest] != CheminMax) {
+						if (Result.Ds[iBoucleSommets2] + ARCSortant[iBoucleArc]->ARClire_poids() < Result.Ds[iPosDest]) {
+							Result.chemin = false;
+							return Result;
+						}
+					}
+
+				}
+		}
+	}
+	Result.chemin = true;
+	return Result;
+
+	/*
+	Entrée: un graphe orienté G=[S,A], des poids w sur les arcs A (i.e w: A -> R+), un sommet source s € S
+	Sortie: un tab Ds indexé par S tel de Ds[t] est la longueur du + courts chemin de s à t dans G
+			un booléean qui vaut Vrai si les + courts chemins ont pu être calculés, Faux sinon
+	function Bellman-Ford(G,w,s)
+		Soit P un tab de taille |S| initialisé à -1
+		Soit Ds un tab de taille |S| initialisé à +inf
+		Ds[s]<- 0											//chemin le plus court vers le chemin de départ = 0
+		P[s]<- 0											//predecesseur du chemin le plus court 
+		Pour i=1 à |S|-1 faire
+			PoidsInchangé <- Vrai
+			Pour tout sommet u € S tel que P[u] = i-1 faire
+				pour tout arc (u,v) du graphe faire
+					longueur <- Ds[u] + w(u,v)
+					Si longueur < Ds[v] alors
+						Ds[v] <- longueur
+						P[v] <- i
+						PoidsInchangé <- Faux
+			Pour tout arc (u,v) du graphe faire
+				si Ds[u] + W(u,v) < Ds[v]
+					retourner Ds et Faux (il existe un cycle absorbant => pas de solution
+			retourner Ds et Vrai
+
+	Vous devez implémenter la méthode Bellman-Ford au sein de la classe CGraphe. Le poids d'un arc sera stocké au niveau de la classe CArc
+	*/
+}
+
+void CGraphe::GRAAfficherBellmanFord(BellmanFord val)
+{
+	if (!val.chemin) {
+		cout << "Ce sommet n'est pas lié à tous les sommets du graphe, les plus courts chemins n'ont donc pas été calculés." << endl;
+	}
+	else {
+		int iBoucle;
+
+		for (iBoucle = 0; iBoucle < iGRANb_sommets; iBoucle++) {			
+			std::cout << "Depuis le sommet n° " << val.iSommetDepart << ", le chemin le plus court vers le sommet n°"<< pGRASommets[iBoucle]->SOMlire_numero_sommet() << " est de " << val.Ds[iBoucle] << std::endl;
+		}
+	}
 }
